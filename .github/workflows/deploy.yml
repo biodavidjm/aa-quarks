@@ -1,0 +1,44 @@
+# Despliegue automático en GitHub Pages.
+#
+# Cada vez que se sube un cambio a la rama `main`, este flujo compila la web
+# con Astro y la publica. No hay que hacer nada más: en 2–3 minutos el cambio
+# está en https://biodavidjm.github.io/aa-quarks/
+#
+# Requisito (solo una vez): en GitHub, Settings → Pages → Source: "GitHub Actions".
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Compilar
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v4
+      - name: Compilar con Astro
+        uses: withastro/action@v3
+
+  deploy:
+    name: Publicar
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
