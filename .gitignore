@@ -1,0 +1,33 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# Espejo crudo de la web antigua (77 MB): se conserva solo en local.
+# Los textos extraídos, el inventario y los índices JSON SÍ se versionan,
+# y todas las fotos útiles están copiadas en src/assets/.
+_antigua-web/www.aaquarks.com/
+_antigua-web/wget.log
+
+# Material fuente local ya publicado en public/documentos/
+recursos/
