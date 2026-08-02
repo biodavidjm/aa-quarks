@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:iphoto="urn:iphoto:property" xmlns:iweb="http://www.apple.com/iweb" version="2.0">
+  <channel>
+    <title>Asociación Astronómica Quarks</title>
+    <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Astrofotografia.html</link>
+    <description>Asociación Astronómica Quarks</description>
+    <item>
+      <title>Cometas y cielo profundo (José Carrillo)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Cometas_y_cielo_profundo_%28Jose_Carrillo%29.html</link>
+      <guid isPermaLink="false">d678cd65-eb03-476d-8b4d-3dd67c3233bb</guid>
+    </item>
+    <item>
+      <title>Ilustraciones a mano alzada (Tomás Ruiz)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Ilustraciones_a_mano_alzada_%28Tomas_Ruiz%29.html</link>
+      <guid isPermaLink="false">c01c6051-eb20-4a91-bd92-428f67341746</guid>
+    </item>
+    <item>
+      <title>Fotografías y sketches (Javier Salido)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Fotografias_y_sketches_%28Javier_Salido%29.html</link>
+      <guid isPermaLink="false">823c491c-7dee-4372-bc98-7b4c5e29842c</guid>
+    </item>
+    <item>
+      <title>Manchas solares (Juan Antonio Jiménez)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Manchas_solares_%28Juan_Antonio_Jimenez%29.html</link>
+      <guid isPermaLink="false">652d197a-c2b3-4f16-afd4-3431751515b7</guid>
+    </item>
+    <item>
+      <title>Cielo Profundo (Emilio Hidalgo)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Cielo_Profundo_%28Emilio_Hidalgo%29.html</link>
+      <guid isPermaLink="false">a6c3e322-566c-4fd3-b341-033e889f0236</guid>
+    </item>
+    <item>
+      <title>Fotografías (Juan de la Cruz Moreno Balboa)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Fotografias_%28Juan_de_la_Cruz_Moreno_Balboa%29.html</link>
+      <guid isPermaLink="false">8af12b36-e0f9-4890-a609-e618cebe55dd</guid>
+    </item>
+    <item>
+      <title>Fotografías (Francisco Fuertes)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Fotografias_%28Francisco_Fuertes%29.html</link>
+      <guid isPermaLink="false">6635e107-b2d9-4acf-8157-0dc7c9fb4cd7</guid>
+    </item>
+    <item>
+      <title>Fotografías (Antonio Herrera)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Fotografias_%28Antonio_Herrera%29.html</link>
+      <guid isPermaLink="false">f0420bfe-76a4-423e-9457-a7c9693eb872</guid>
+    </item>
+    <item>
+      <title>Fotografías (Cristóbal Gámez)</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Fotografias_%28Cristobal_Gamez%29.html</link>
+      <guid isPermaLink="false">6d58a126-d37e-4bfc-83a5-e76f25b96f15</guid>
+    </item>
+    <item>
+      <title>Varios autores</title>
+      <link>http://www.aaquarks.com/Asociacion_Astronomica_Quarks/Astrofotografia/Paginas/Varios_autores.html</link>
+      <guid isPermaLink="false">6f23f804-51d1-4d72-ab68-51e3a508568b</guid>
+    </item>
+  </channel>
+</rss>
