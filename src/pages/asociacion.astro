@@ -1,0 +1,147 @@
+---
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { SITE, REDES } from '../consts';
+
+import logo from '../assets/asociacion/logo-aaq.png';
+import fotoObservacion from '../assets/asociacion/observacion-publica.png';
+import fotoTelescopioArtesanal from '../assets/asociacion/telescopio-artesanal.jpg';
+import fotoDobson from '../assets/asociacion/telescopio-dobson-esteban.jpg';
+import fotoFueraDeEje from '../assets/asociacion/telescopio-fuera-de-eje.jpg';
+import fotoAniversario from '../assets/asociacion/25-aniversario-sinagoga.jpg';
+
+const pagina = await getEntry('paginas', 'asociacion');
+if (!pagina) throw new Error('Falta src/content/paginas/asociacion.md');
+const { Content } = await render(pagina);
+const d = pagina.data as any;
+
+const galeria = [
+  { imagen: fotoObservacion, alt: 'Observación pública nocturna con un telescopio construido por la asociación', pie: 'Observación pública en Úbeda' },
+  { imagen: fotoTelescopioArtesanal, alt: 'Telescopio artesanal de la asociación con montura amarilla', pie: 'Instrumental construido por los socios' },
+  { imagen: fotoDobson, alt: 'Telescopio Dobson de 150 mm construido por Esteban Higueras', pie: 'Dobson de 150 mm, de Esteban Higueras' },
+  { imagen: fotoFueraDeEje, alt: 'Telescopio fuera de eje de 16 cm construido por Juan Antonio Jiménez', pie: 'Fuera de eje de 16 cm, de Juan Antonio Jiménez' },
+  { imagen: fotoAniversario, alt: 'Celebración del 25 aniversario de la asociación en la Sinagoga del Agua', pie: '25 aniversario en la Sinagoga del Agua (2014)' },
+];
+---
+
+<Base titulo={d.titulo} descripcion={d.descripcion}>
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="flex items-start gap-6">
+      <div class="min-w-0">
+        <p class="eyebrow">Desde 1989 en Úbeda</p>
+        <h1 class="heading mt-3 text-4xl sm:text-5xl">La Asociación</h1>
+        <p class="mt-4 max-w-2xl text-lg leading-relaxed text-fog-300">
+          Del tamaño de un quark a la escala del Universo: más de tres décadas divulgando la
+          astronomía desde la provincia de Jaén.
+        </p>
+      </div>
+      <Image
+        src={logo}
+        alt="Emblema de la Asociación Astronómica Quarks: un telescopio ante la Luna sobre fondo estrellado"
+        width={112}
+        height={112}
+        class="ml-auto hidden h-24 w-24 shrink-0 rounded-full sm:block md:h-28 md:w-28"
+        loading="eager"
+      />
+    </div>
+
+    <div class="prose prose-invert prose-quarks mt-10 max-w-3xl">
+      <Content />
+    </div>
+
+    <!-- Qué hacemos -->
+    <section aria-labelledby="titulo-que-hacemos" class="mt-14">
+      <h2 id="titulo-que-hacemos" class="heading text-3xl">Qué hacemos</h2>
+      <div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          d.queHacemos.map((bloque: { nombre: string; detalle: string }) => (
+            <div class="card p-6">
+              <h3 class="font-display text-lg font-semibold text-star-300">{bloque.nombre}</h3>
+              <p class="mt-2.5 text-sm leading-relaxed text-fog-200">{bloque.detalle}</p>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Galería breve -->
+    <section aria-label="Fotografías de la asociación" class="mt-14">
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        {
+          galeria.map((foto) => (
+            <figure class="card overflow-hidden">
+              <Image src={foto.imagen} alt={foto.alt} width={360} height={270} fit="cover" class="aspect-[4/3] w-full object-cover" />
+              <figcaption class="p-2.5 text-[0.7rem] leading-snug text-fog-400">{foto.pie}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Contacto -->
+    <section aria-labelledby="titulo-contacto" class="mt-14">
+      <div class="card p-8 sm:p-10">
+        <h2 id="titulo-contacto" class="heading text-3xl">Contacto</h2>
+        <div class="mt-6 grid gap-8 md:grid-cols-3">
+          <div>
+            <p class="text-sm tracking-widest text-fog-400 uppercase">Correo</p>
+            <a class="mt-1.5 block font-medium text-star-300 hover:text-star-200" href={`mailto:${SITE.email}`}>
+              {SITE.email}
+            </a>
+            <p class="mt-3 text-sm tracking-widest text-fog-400 uppercase">Planetario</p>
+            <a class="mt-1.5 block font-medium text-star-300 hover:text-star-200" href={`mailto:${SITE.emailPlanetario}`}>
+              {SITE.emailPlanetario}
+            </a>
+          </div>
+          <div>
+            <p class="text-sm tracking-widest text-fog-400 uppercase">Dónde</p>
+            <p class="mt-1.5 text-fog-100">{SITE.localidad}</p>
+            <p class="mt-1 text-sm text-fog-400">
+              Planetario: Hospital de Santiago, Úbeda · Observatorio: La Fresnedilla, Sierra de
+              las Villas
+            </p>
+          </div>
+          <div>
+            <p class="text-sm tracking-widest text-fog-400 uppercase">Redes</p>
+            <ul class="mt-1.5 space-y-1.5">
+              {
+                REDES.map((red) => (
+                  <li>
+                    <a class="font-medium text-star-300 hover:text-star-200" href={red.url} rel="noopener">
+                      {red.nombre} — {red.usuario}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+
+        <!--
+          Formulario de contacto: de momento usamos mailto (sin servidor no hay envío).
+          TODO(asociación): cuando queráis un formulario real, crear una cuenta gratuita
+          en https://formspree.io, sustituir FORMSPREE_ID abajo y descomentar el bloque.
+
+        <form action="https://formspree.io/f/FORMSPREE_ID" method="POST" class="mt-8 grid gap-4 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-sm text-fog-300">Tu nombre</span>
+            <input required name="nombre" type="text" class="mt-1 w-full rounded-lg border border-night-600 bg-night-900 px-3 py-2 text-fog-100" />
+          </label>
+          <label class="block">
+            <span class="text-sm text-fog-300">Tu correo</span>
+            <input required name="email" type="email" class="mt-1 w-full rounded-lg border border-night-600 bg-night-900 px-3 py-2 text-fog-100" />
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="text-sm text-fog-300">Mensaje</span>
+            <textarea required name="mensaje" rows="4" class="mt-1 w-full rounded-lg border border-night-600 bg-night-900 px-3 py-2 text-fog-100"></textarea>
+          </label>
+          <button type="submit" class="w-fit rounded-xl bg-star-400 px-6 py-3 font-display font-semibold text-night-950 hover:bg-star-300">
+            Enviar mensaje
+          </button>
+        </form>
+        -->
+      </div>
+    </section>
+  </div>
+</Base>

@@ -1,0 +1,232 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import CuentaAtras from '../components/CuentaAtras.astro';
+import { SITE, href } from '../consts';
+
+import fotoFresnedilla from '../assets/fresnedilla/hero-centro.jpg';
+import fotoPlanetario from '../assets/planetario/panoramica.jpg';
+import fotoM31 from '../assets/astrofotografia/emilio-hidalgo-galaxia-de-andromeda-m31.jpg';
+import fotoSimulacion from '../assets/simulaciones/pluto-new-horizons.png';
+
+const eclipse = await getEntry('eclipses', '2026');
+if (!eclipse) throw new Error('Falta el contenido del eclipse 2026');
+
+const actividades = (await getCollection('actividades', ({ data }) => !data.historica))
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
+
+const tarjetas = [
+  {
+    titulo: 'Centro de La Fresnedilla',
+    texto:
+      'Nuestro observatorio y centro de divulgación en plena Sierra de las Villas, construido piedra a piedra por los socios. Ayúdanos a mantenerlo vivo.',
+    ruta: '/la-fresnedilla/',
+    cta: 'Conócelo y colabora',
+    imagen: fotoFresnedilla,
+    alt: 'Edificio blanco del Centro de La Fresnedilla con su cúpula de observación, rodeado de árboles en la Sierra de las Villas',
+  },
+  {
+    titulo: 'Planetario de Úbeda',
+    texto:
+      'Un planetario construido artesanalmente por la asociación en el Hospital de Santiago: más de 3.000 estrellas bajo una cúpula de seis metros.',
+    ruta: '/planetario/',
+    cta: 'Visítalo',
+    imagen: fotoPlanetario,
+    alt: 'Interior del Planetario de Úbeda: butacas circulares alrededor del proyector bajo la cúpula',
+  },
+  {
+    titulo: 'Astrofotografía',
+    texto:
+      'Galaxias, cometas, la Luna y el Sol fotografiados desde la provincia de Jaén por los socios. Más de 150 imágenes con su autor y su historia.',
+    ruta: '/astrofotografia/',
+    cta: 'Abrir la galería',
+    imagen: fotoM31,
+    alt: 'La galaxia de Andrómeda (M31) fotografiada por Emilio Hidalgo',
+  },
+  {
+    titulo: 'Simulaciones',
+    texto:
+      'Aprende jugando: simulaciones interactivas para explorar el cosmos desde el navegador, empezando por el viaje de la New Horizons a Plutón.',
+    ruta: '/simulaciones/',
+    cta: 'Explorar',
+    imagen: fotoSimulacion,
+    alt: 'Simulación interactiva de la trayectoria de la sonda New Horizons por el sistema solar',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: SITE.nombre,
+      email: SITE.email,
+      foundingDate: String(SITE.fundacion),
+      url: new URL(import.meta.env.BASE_URL, Astro.site).toString(),
+      location: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Úbeda', addressRegion: 'Jaén', addressCountry: 'ES' } },
+    },
+    {
+      '@type': 'Event',
+      name: `${eclipse.data.titulo} (visible desde Úbeda)`,
+      startDate: eclipse.data.inicioISO,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: { '@type': 'Place', name: 'Úbeda', address: { '@type': 'PostalAddress', addressLocality: 'Úbeda', addressRegion: 'Jaén', addressCountry: 'ES' } },
+      organizer: { '@type': 'Organization', name: SITE.nombre, email: SITE.email },
+    },
+  ],
+};
+---
+
+<Base>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+  <!-- HERO: eclipse del 12 de agosto de 2026 -->
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="hero-eclipse"></div>
+    </div>
+    <div class="relative mx-auto max-w-6xl px-4 pt-16 pb-14 sm:px-6 sm:pt-24 sm:pb-20">
+      <p class="eyebrow">12 de agosto de 2026 · Úbeda</p>
+      <h1 class="heading mt-4 max-w-3xl text-4xl leading-[1.08] sm:text-6xl">
+        El gran eclipse de Sol<br />
+        <span class="text-star-300">ya está en camino</span>
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-fog-300">
+        España vivirá su primer eclipse total de Sol en más de un siglo. Desde Úbeda veremos el
+        <strong class="text-fog-100">97,2&nbsp;% del Sol oculto</strong> justo antes del ocaso: un
+        atardecer que no olvidarás. Te contamos cómo, dónde y con qué protección observarlo.
+      </p>
+
+      <div class="mt-9">
+        <CuentaAtras objetivoISO={eclipse.data.inicioISO} />
+      </div>
+
+      <div class="mt-9 flex flex-wrap items-center gap-4">
+        <a
+          href={href('/eclipses/2026/')}
+          class="inline-flex items-center gap-2 rounded-xl bg-star-400 px-6 py-3.5 font-display text-lg font-semibold text-night-950 shadow-lg shadow-star-400/20 transition-colors hover:bg-star-300"
+        >
+          Todo sobre el eclipse
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
+          </svg>
+        </a>
+        <p class="max-w-56 text-sm leading-snug text-fog-400">
+          Con horarios locales, puntos de observación y dónde comprar gafas homologadas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarjetas de secciones -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-label="Secciones destacadas">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        tarjetas.map((tarjeta) => (
+          <a href={href(tarjeta.ruta)} class="card card-hover group block overflow-hidden">
+            <div class="aspect-[16/9] overflow-hidden bg-night-900">
+              <Image
+                src={tarjeta.imagen}
+                alt={tarjeta.alt}
+                width={640}
+                height={360}
+                fit="cover"
+                class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h2 class="font-display text-2xl font-semibold text-fog-50 group-hover:text-star-300 transition-colors">
+                {tarjeta.titulo}
+              </h2>
+              <p class="mt-2 leading-relaxed text-fog-300">{tarjeta.texto}</p>
+              <p class="mt-4 inline-flex items-center gap-1.5 font-display font-medium text-star-400">
+                {tarjeta.cta}
+                <svg class="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
+                </svg>
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Últimas actividades -->
+  {
+    actividades.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 pt-16 sm:px-6" aria-labelledby="titulo-actividades">
+        <div class="flex items-baseline justify-between gap-4">
+          <h2 id="titulo-actividades" class="heading text-3xl">
+            Actividades
+          </h2>
+          <a href={href('/actividades/')} class="font-display text-sm font-medium text-star-400 hover:text-star-300">
+            Ver todas →
+          </a>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-3">
+          {actividades.map((actividad) => (
+            <a href={href(`/actividades/${actividad.id}/`)} class="card card-hover block p-5">
+              <time class="text-xs tracking-widest text-fog-400 uppercase" datetime={actividad.data.fecha.toISOString()}>
+                {actividad.data.fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' })}
+              </time>
+              <h3 class="mt-2 font-display text-lg font-semibold text-fog-50">{actividad.data.titulo}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-fog-300">{actividad.data.resumen}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Quiénes somos, en breve -->
+  <section class="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+    <div class="card flex flex-col items-start gap-6 p-8 sm:p-10 md:flex-row md:items-center">
+      <div class="flex-1">
+        <h2 class="heading text-2xl sm:text-3xl">Desde 1989, mirando el cielo de Jaén</h2>
+        <p class="mt-3 max-w-2xl leading-relaxed text-fog-300">
+          Somos más de cien socios que construimos telescopios, un planetario y un observatorio en
+          la sierra; organizamos observaciones públicas y llevamos la astronomía a colegios y
+          asociaciones de toda la provincia. Únete: no hace falta saber nada de astronomía, solo
+          tener curiosidad.
+        </p>
+      </div>
+      <a
+        href={href('/asociacion/')}
+        class="inline-flex shrink-0 items-center gap-2 rounded-xl border border-star-400/60 px-6 py-3 font-display font-semibold text-star-300 transition-colors hover:bg-star-400/10"
+      >
+        Conoce la asociación
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Sol eclipsado con corona, dibujado solo con CSS */
+  .hero-eclipse {
+    position: absolute;
+    top: 30px;
+    right: -120px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #05070d 57%, transparent 59%);
+    box-shadow:
+      0 0 50px 14px rgba(245, 193, 99, 0.35),
+      0 0 180px 70px rgba(245, 193, 99, 0.12),
+      inset 0 0 0 4px rgba(255, 231, 179, 0.8);
+    opacity: 0.9;
+  }
+  @media (max-width: 1024px) {
+    .hero-eclipse {
+      width: 300px;
+      height: 300px;
+      top: -60px;
+      right: -120px;
+      opacity: 0.55;
+    }
+  }
+</style>

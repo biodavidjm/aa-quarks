@@ -1,0 +1,216 @@
+---
+import { getEntry, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { SITE, href } from '../consts';
+
+import heroCentro from '../assets/fresnedilla/hero-centro.jpg';
+import fotoEspejo from '../assets/fresnedilla/espejo-410mm.jpg';
+import fotoMontura from '../assets/fresnedilla/montura-inglesa.jpg';
+import fotoCupula from '../assets/fresnedilla/construccion-cupula.jpg';
+import fotoPrimeraLuz from '../assets/fresnedilla/primera-luz-luna.jpg';
+import fotoCielo from '../assets/fresnedilla/cielo-desde-cupula.jpg';
+import fotoTelescopio from '../assets/fresnedilla/telescopio-41cm.jpg';
+import fotoTerraza from '../assets/fresnedilla/terraza-socios.jpg';
+import fotoPantano from '../assets/fresnedilla/pantano-aguascebas.jpg';
+
+const pagina = await getEntry('paginas', 'fresnedilla');
+if (!pagina) throw new Error('Falta src/content/paginas/fresnedilla.md');
+const { Content } = await render(pagina);
+const d = pagina.data as any;
+
+const construccion = [
+  { imagen: fotoEspejo, alt: 'Socios preparando el espejo principal del telescopio de La Fresnedilla', pie: 'El espejo principal, preparado por los socios' },
+  { imagen: fotoMontura, alt: 'La montura ecuatorial inglesa del telescopio, construida por los socios', pie: 'La montura inglesa, soldada en el taller' },
+  { imagen: fotoCupula, alt: 'Construcción de la cúpula del observatorio', pie: 'La cúpula, levantada pieza a pieza' },
+  { imagen: fotoPrimeraLuz, alt: 'La Luna menguante, primera luz del telescopio principal de La Fresnedilla', pie: 'La primera luz: la Luna' },
+];
+---
+
+<Base titulo={d.titulo} descripcion={d.descripcion}>
+  <!-- Hero con la foto del centro -->
+  <section class="relative">
+    <div class="absolute inset-0">
+      <Image
+        src={heroCentro}
+        alt=""
+        widths={[640, 960, 1280]}
+        sizes="100vw"
+        class="h-full w-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-night-950 via-night-950/70 to-night-950/30"></div>
+    </div>
+    <div class="relative mx-auto flex min-h-[70vh] max-w-6xl flex-col justify-end px-4 pt-32 pb-14 sm:px-6">
+      <p class="eyebrow drop-shadow">Sierra de las Villas · Parque Natural de Cazorla, Segura y Las Villas</p>
+      <h1 class="heading mt-3 max-w-3xl text-4xl drop-shadow-lg sm:text-5xl">
+        Centro de Divulgación Astronómico «La&nbsp;Fresnedilla»
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-fog-100 drop-shadow">{d.lema}.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#colabora"
+          class="inline-flex items-center gap-2 rounded-xl bg-star-400 px-6 py-3.5 font-display text-lg font-semibold text-night-950 shadow-lg shadow-night-950/40 transition-colors hover:bg-star-300"
+        >
+          ★ Colabora con La Fresnedilla
+        </a>
+        <a
+          href={`mailto:${SITE.email}?subject=Reserva de visita a La Fresnedilla`}
+          class="inline-flex items-center gap-2 rounded-xl border border-fog-100/40 bg-night-950/50 px-6 py-3.5 font-display font-semibold text-fog-50 backdrop-blur transition-colors hover:bg-night-950/80"
+        >
+          Reserva una visita
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl space-y-16 px-4 pt-16 sm:px-6">
+    <!-- Historia + tira de construcción -->
+    <section aria-labelledby="titulo-historia">
+      <div class="prose prose-invert prose-quarks max-w-3xl">
+        <Content />
+      </div>
+      <div class="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {
+          construccion.map((foto) => (
+            <figure class="card overflow-hidden">
+              <Image src={foto.imagen} alt={foto.alt} width={480} height={360} fit="cover" class="aspect-[4/3] w-full object-cover" />
+              <figcaption class="p-3 text-xs leading-snug text-fog-400">{foto.pie}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Equipamiento -->
+    <section aria-labelledby="titulo-equipamiento">
+      <h2 id="titulo-equipamiento" class="heading text-3xl">Qué encontrarás</h2>
+      <div class="mt-6 grid gap-5 md:grid-cols-3">
+        {
+          d.equipamiento.map((eq: { nombre: string; detalle: string }) => (
+            <div class="card p-6">
+              <h3 class="font-display text-xl font-semibold text-star-300">{eq.nombre}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-fog-200">{eq.detalle}</p>
+            </div>
+          ))
+        }
+      </div>
+      <figure class="card mt-6 overflow-hidden md:flex">
+        <Image
+          src={fotoTelescopio}
+          alt="Telescopio reflector de 41 cm de La Fresnedilla sobre su montura ecuatorial inglesa"
+          width={640}
+          height={480}
+          fit="cover"
+          class="aspect-[4/3] w-full object-cover md:w-1/2"
+        />
+        <div class="flex flex-col justify-center p-6 md:w-1/2">
+          <figcaption class="text-sm text-fog-400">El telescopio principal</figcaption>
+          <p class="mt-2 leading-relaxed text-fog-200">
+            Un Newton de 450 mm construido por los propios socios: espejo, montura y electrónica.
+            Uno de los mayores telescopios de acceso público de Andalucía, en uno de sus mejores
+            cielos.
+          </p>
+        </div>
+      </figure>
+    </section>
+
+    <!-- El cielo y el entorno -->
+    <section aria-labelledby="titulo-cielo" class="grid items-center gap-8 lg:grid-cols-2">
+      <div>
+        <h2 id="titulo-cielo" class="heading text-3xl">Cielo oscuro, de verdad</h2>
+        <p class="mt-4 leading-relaxed text-fog-200">
+          A 750 metros de altitud y a decenas de kilómetros de la ciudad más cercana, La
+          Fresnedilla ofrece lo que casi ningún observatorio público puede: un cielo sin
+          contaminación lumínica donde la Vía Láctea se ve a simple vista. Por el día, el entorno
+          también deslumbra: el pantano del Aguascebas, La Osera y la cascada de Chorrogil están a
+          un paseo.
+        </p>
+        <ul class="mt-5 space-y-2 text-fog-300">
+          {d.actividades.map((actividad: string) => (
+            <li class="flex gap-2.5">
+              <span class="mt-1 text-star-400" aria-hidden="true">✦</span>
+              <span class="leading-relaxed">{actividad}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <Image src={fotoCielo} alt="Cielo estrellado visto desde la escotilla de la cúpula del observatorio" width={480} height={640} fit="cover" class="card aspect-[3/4] w-full object-cover" />
+        <div class="space-y-4">
+          <Image src={fotoTerraza} alt="Socios de la asociación en la terraza del centro" width={480} height={360} fit="cover" class="card aspect-[4/3] w-full object-cover" />
+          <Image src={fotoPantano} alt="El pantano del Aguascebas, cerca de La Fresnedilla" width={480} height={360} fit="cover" class="card aspect-[4/3] w-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Visitas -->
+    <section aria-labelledby="titulo-visitas">
+      <h2 id="titulo-visitas" class="heading text-3xl">Visítanos</h2>
+      <div class="mt-6 grid gap-5 md:grid-cols-2">
+        {
+          d.visitas.map((visita: { tipo: string; cuando: string; incluye: string }) => (
+            <div class="card p-6">
+              <h3 class="font-display text-xl font-semibold text-fog-50">{visita.tipo}</h3>
+              <p class="mt-1 text-sm font-medium text-star-400">{visita.cuando}</p>
+              <p class="mt-3 text-sm leading-relaxed text-fog-200">{visita.incluye}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="card mt-5 p-6">
+        <h3 class="font-display text-lg font-semibold text-fog-50">Donativos de las visitas particulares</h3>
+        <ul class="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm text-fog-200">
+          {d.donativos.map((linea: string) => <li>{linea}</li>)}
+        </ul>
+        <p class="mt-3 text-xs leading-relaxed text-fog-400">{d.avisoDonativos}</p>
+        <p class="mt-4 text-sm text-fog-200">
+          Reservas: <a class="font-medium text-star-300 underline decoration-star-400/40 underline-offset-4 hover:text-star-200" href={`mailto:${SITE.email}?subject=Reserva de visita a La Fresnedilla`}>{SITE.email}</a>
+        </p>
+      </div>
+      <div class="card mt-5 p-6">
+        <h3 class="font-display text-lg font-semibold text-fog-50">Cómo llegar</h3>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-fog-200">{d.comoLlegar}</p>
+      </div>
+    </section>
+
+    <!-- CTA COLABORA -->
+    <section id="colabora" aria-labelledby="titulo-colabora" class="scroll-mt-24">
+      <div class="relative overflow-hidden rounded-3xl border border-star-400/40 bg-gradient-to-br from-night-800 to-night-900 p-8 sm:p-12">
+        <div class="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-star-400/10 blur-3xl" aria-hidden="true"></div>
+        <p class="eyebrow">El futuro del centro depende de todos</p>
+        <h2 id="titulo-colabora" class="heading mt-3 max-w-2xl text-3xl sm:text-4xl">
+          Colabora con La&nbsp;Fresnedilla
+        </h2>
+        <p class="mt-4 max-w-2xl leading-relaxed text-fog-200">
+          La Fresnedilla se mantiene con el trabajo voluntario de los socios y los donativos de
+          sus visitantes. Si crees que un observatorio público bajo un cielo oscuro merece seguir
+          abierto —para colegios, para familias, para quien nunca ha mirado por un telescopio—,
+          puedes ayudarnos: hazte socio, patrocina una actividad o haz una donación al
+          mantenimiento del centro.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a
+            href={`mailto:${SITE.email}?subject=Quiero colaborar con La Fresnedilla`}
+            class="inline-flex items-center gap-2 rounded-xl bg-star-400 px-6 py-3.5 font-display text-lg font-semibold text-night-950 transition-colors hover:bg-star-300"
+          >
+            Escríbenos para colaborar
+          </a>
+          <a
+            href={href('/asociacion/')}
+            class="inline-flex items-center gap-2 rounded-xl border border-star-400/50 px-6 py-3.5 font-display font-semibold text-star-300 transition-colors hover:bg-star-400/10"
+          >
+            Hazte socio
+          </a>
+        </div>
+        <!-- TODO(asociación): añadir aquí los datos concretos de donación cuando estén
+             disponibles (cuenta bancaria / Bizum / plataforma de micromecenazgo) y, si
+             procede, información fiscal para patrocinios (CIF de la asociación). -->
+        <p class="mt-5 text-xs text-fog-500">
+          Empresas e instituciones: consultad las opciones de patrocinio y colaboración en el
+          mismo correo.
+        </p>
+      </div>
+    </section>
+  </div>
+</Base>

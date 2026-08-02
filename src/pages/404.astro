@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { href } from '../consts';
+---
+
+<Base titulo="Página no encontrada" descripcion="La página que buscas no existe o ha cambiado de sitio.">
+  <div class="mx-auto flex max-w-3xl flex-col items-center px-4 py-24 text-center sm:px-6">
+    <p class="font-display text-7xl font-bold text-star-400">404</p>
+    <h1 class="heading mt-4 text-3xl">Objeto no localizado en este cielo</h1>
+    <p class="mt-4 max-w-md leading-relaxed text-fog-300">
+      La página que buscas no existe o ha cambiado de coordenadas. Prueba desde la portada, o
+      escríbenos si crees que falta algo.
+    </p>
+    <a
+      href={href('/')}
+      class="mt-8 inline-flex items-center gap-2 rounded-xl bg-star-400 px-6 py-3 font-display font-semibold text-night-950 transition-colors hover:bg-star-300"
+    >
+      Volver al inicio
+    </a>
+  </div>
+</Base>

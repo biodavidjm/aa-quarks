@@ -1,0 +1,207 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CuentaAtras from '../../components/CuentaAtras.astro';
+import BannerSeguridad from '../../components/BannerSeguridad.astro';
+import BloqueEnlaces from '../../components/BloqueEnlaces.astro';
+import { href } from '../../consts';
+
+export async function getStaticPaths() {
+  const eclipses = await getCollection('eclipses');
+  return eclipses.map((eclipse) => ({ params: { slug: eclipse.id }, props: { eclipse } }));
+}
+
+const { eclipse } = Astro.props;
+const { data } = eclipse;
+const { Content } = await render(eclipse);
+
+const fechaLarga = data.fecha.toLocaleDateString('es-ES', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Madrid',
+});
+
+const fases = [
+  { etiqueta: 'Inicio', valor: data.local.inicio },
+  { etiqueta: 'Máximo', valor: data.local.maximo },
+  ...(data.local.ocaso ? [{ etiqueta: 'Ocaso del Sol', valor: data.local.ocaso }] : []),
+  { etiqueta: 'Final', valor: data.local.fin },
+];
+---
+
+<Base titulo={`${data.titulo} en Úbeda`} descripcion={`${data.titulo}: horarios para Úbeda, seguridad, dónde comprar filtros homologados y toda la información oficial. ${data.subtitulo ?? ''}`}>
+  <!-- Hero del eclipse -->
+  <section class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+      <div class="eclipse-disco"></div>
+    </div>
+    <div class="relative mx-auto max-w-6xl px-4 pt-14 pb-10 sm:px-6 sm:pt-20">
+      <p class="eyebrow">{fechaLarga} · Úbeda</p>
+      <h1 class="heading mt-3 max-w-3xl text-4xl sm:text-5xl">{data.titulo}</h1>
+      {data.subtitulo && <p class="mt-4 max-w-2xl text-lg leading-relaxed text-fog-300">{data.subtitulo}</p>}
+
+      <div class="mt-8">
+        <p class="mb-3 text-sm tracking-widest text-fog-400 uppercase">Comienza en</p>
+        <CuentaAtras objetivoISO={data.inicioISO} />
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        {
+          data.pdf && (
+            <a
+              href={href(data.pdf.ruta)}
+              class="inline-flex items-center gap-2 rounded-xl bg-star-400 px-5 py-3 font-display font-semibold text-night-950 transition-colors hover:bg-star-300"
+            >
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 3v9m0 0 3.5-3.5M10 12 6.5 8.5M4 15h12" />
+              </svg>
+              Descargar la infografía local (PDF, {data.pdf.peso})
+            </a>
+          )
+        }
+        <a
+          href="#seguridad"
+          class="inline-flex items-center gap-2 rounded-xl border border-warn-400/60 px-5 py-3 font-display font-semibold text-warn-300 transition-colors hover:bg-warn-400/10"
+        >
+          Observa con seguridad
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-6xl space-y-14 px-4 pb-10 sm:px-6">
+    <!-- Circunstancias locales -->
+    <section aria-labelledby="titulo-datos">
+      <h2 id="titulo-datos" class="heading text-2xl sm:text-3xl">El eclipse en Úbeda, minuto a minuto</h2>
+      <p class="mt-2 max-w-2xl text-fog-300">
+        {data.local.tipo}. En el máximo quedará oculto el
+        <strong class="text-star-300">{data.local.oscurecimiento}</strong> del disco solar.
+      </p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          fases.map((fase) => (
+            <div class="card p-5 text-center">
+              <p class="text-sm tracking-widest text-fog-400 uppercase">{fase.etiqueta}</p>
+              <p class="mt-2 font-display text-3xl font-bold text-fog-50">{fase.valor}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <dl class="mt-6 grid gap-x-8 gap-y-3 text-sm sm:grid-cols-3">
+        <div class="flex gap-2">
+          <dt class="text-fog-400">Duración visible:</dt>
+          <dd class="text-fog-100">{data.local.duracionVisible}</dd>
+        </div>
+        {
+          data.local.alturaSolMaximo && (
+            <div class="flex gap-2">
+              <dt class="text-fog-400">Altura del Sol en el máximo:</dt>
+              <dd class="text-fog-100">{data.local.alturaSolMaximo}</dd>
+            </div>
+          )
+        }
+        {
+          data.local.acimutMaximo && (
+            <div class="flex gap-2">
+              <dt class="text-fog-400">Acimut:</dt>
+              <dd class="text-fog-100">{data.local.acimutMaximo}</dd>
+            </div>
+          )
+        }
+      </dl>
+      {data.local.notas && <p class="mt-4 max-w-3xl text-sm leading-relaxed text-fog-400">{data.local.notas}</p>}
+    </section>
+
+    <!-- Seguridad -->
+    <section id="seguridad" aria-label="Seguridad en la observación">
+      <BannerSeguridad />
+    </section>
+
+    <!-- Cuerpo del artículo -->
+    <section class="prose prose-invert prose-quarks max-w-3xl">
+      <Content />
+    </section>
+
+    <!-- Puntos de observación -->
+    {
+      data.puntosObservacion.length > 0 && (
+        <section aria-labelledby="titulo-puntos">
+          <h2 id="titulo-puntos" class="heading text-2xl sm:text-3xl">
+            Puntos de observación en Úbeda
+          </h2>
+          <div class="mt-6 grid gap-4 sm:grid-cols-3">
+            {data.puntosObservacion.map((punto, i) => (
+              <div class="card p-5">
+                <p class="font-display text-lg font-semibold text-star-300">
+                  {i + 1}. {punto.nombre}
+                </p>
+                {punto.notas && <p class="mt-2 text-sm leading-relaxed text-fog-300">{punto.notas}</p>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Bloques de enlaces -->
+    <section aria-label="Recursos sobre el eclipse" class="grid gap-6 lg:grid-cols-2">
+      <BloqueEnlaces id="enlaces-oficiales" titulo="Información oficial" enlaces={data.enlacesOficiales} />
+      <BloqueEnlaces
+        id="tiendas"
+        titulo="Dónde comprar gafas y filtros homologados"
+        nota="Tiendas españolas especializadas en astronomía. Compra con antelación: en 2026 volarán."
+        enlaces={data.tiendasFiltros}
+      />
+      <BloqueEnlaces id="visualizadores" titulo="Visualizadores interactivos" enlaces={data.visualizadores} />
+      <section class="card p-6 sm:p-7" aria-labelledby="para-saber-mas">
+        <h3 id="para-saber-mas" class="heading text-xl">Para saber más</h3>
+        <ul class="mt-4 space-y-3">
+          {
+            data.libros.map((libro) => (
+              <li>
+                {libro.url ? (
+                  <a href={libro.url} rel="noopener" class="font-medium text-star-300 underline decoration-star-400/40 underline-offset-4 hover:text-star-200">
+                    {libro.titulo}
+                  </a>
+                ) : (
+                  <span class="font-medium text-fog-100">«{libro.titulo}»</span>
+                )}
+                {libro.autor && <p class="mt-0.5 text-sm text-fog-400">{libro.autor}</p>}
+                {libro.isbn && <p class="text-sm text-fog-500">ISBN {libro.isbn}</p>}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </section>
+  </div>
+</Base>
+
+<style>
+  /* Disco del eclipse: Sol oculto con anillo de luz, dibujado solo con CSS */
+  .eclipse-disco {
+    position: absolute;
+    top: -60px;
+    right: -80px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #05070d 58%, transparent 60%);
+    box-shadow:
+      0 0 40px 12px rgba(245, 193, 99, 0.32),
+      0 0 140px 50px rgba(245, 193, 99, 0.12),
+      inset 0 0 0 3px rgba(255, 231, 179, 0.75);
+    opacity: 0.85;
+  }
+  @media (max-width: 1024px) {
+    .eclipse-disco {
+      width: 280px;
+      height: 280px;
+      top: -80px;
+      right: -100px;
+    }
+  }
+</style>

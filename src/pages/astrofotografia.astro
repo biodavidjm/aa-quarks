@@ -1,0 +1,206 @@
+---
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+
+const fotos = (await getCollection('astrofotos')).sort((a, b) => {
+  if (a.data.destacada !== b.data.destacada) return a.data.destacada ? -1 : 1;
+  return a.data.autor.localeCompare(b.data.autor, 'es') || a.data.titulo.localeCompare(b.data.titulo, 'es');
+});
+
+const CATEGORIAS: Record<string, string> = {
+  'cielo-profundo': 'Cielo profundo',
+  'sistema-solar': 'Sistema solar',
+  cometas: 'Cometas',
+  sol: 'El Sol',
+  dibujos: 'Dibujos y sketches',
+  paisajes: 'Paisajes y equipo',
+};
+
+/* Para el lightbox generamos la imagen optimizada a tamaño completo. */
+const items = await Promise.all(
+  fotos.map(async (foto) => {
+    const grande = await getImage({ src: foto.data.imagen, format: 'webp' });
+    return { foto, grande };
+  })
+);
+
+const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.localeCompare(b, 'es'));
+---
+
+<Base
+  titulo="Astrofotografía"
+  descripcion={`Galería de astrofotografía de los socios de la Asociación Astronómica Quarks: ${fotos.length} imágenes de cielo profundo, sistema solar, cometas y Sol, con autores como ${autores.slice(0, 4).join(', ')}.`}
+>
+  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6">
+    <p class="eyebrow">Galería de los socios</p>
+    <h1 class="heading mt-3 text-4xl sm:text-5xl">Astrofotografía</h1>
+    <p class="mt-4 max-w-2xl leading-relaxed text-fog-300">
+      El cielo de la provincia de Jaén, fotografiado y dibujado por los socios de la asociación:
+      desde la galaxia de Andrómeda hasta las manchas solares, pasando por cometas, la Luna y
+      sketches a mano alzada. Colección recuperada del archivo histórico de nuestra web
+      (2009–2015). ¿Eres socio y quieres publicar aquí tus fotos? Escríbenos.
+    </p>
+
+    <!-- Filtros -->
+    <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+      <button
+        type="button"
+        data-filtro="todas"
+        aria-pressed="true"
+        class="filtro-btn rounded-full border border-night-600 px-4 py-1.5 text-sm font-medium text-fog-200 transition-colors hover:border-star-400/60 aria-pressed:border-star-400 aria-pressed:bg-star-400/15 aria-pressed:text-star-300"
+      >
+        Todas ({fotos.length})
+      </button>
+      {
+        Object.entries(CATEGORIAS).map(([clave, nombre]) => {
+          const n = fotos.filter((f) => f.data.categoria === clave).length;
+          return (
+            n > 0 && (
+              <button
+                type="button"
+                data-filtro={clave}
+                aria-pressed="false"
+                class="filtro-btn rounded-full border border-night-600 px-4 py-1.5 text-sm font-medium text-fog-200 transition-colors hover:border-star-400/60 aria-pressed:border-star-400 aria-pressed:bg-star-400/15 aria-pressed:text-star-300"
+              >
+                {nombre} ({n})
+              </button>
+            )
+          );
+        })
+      }
+    </div>
+
+    <!-- Rejilla -->
+    <div id="galeria" class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {
+        items.map(({ foto, grande }, i) => (
+          <a
+            href={grande.src}
+            data-pswp-width={grande.attributes.width}
+            data-pswp-height={grande.attributes.height}
+            data-categoria={foto.data.categoria}
+            data-titulo={foto.data.titulo}
+            data-autor={foto.data.autor}
+            data-equipo={foto.data.equipo ?? ''}
+            data-fecha={foto.data.fecha ?? ''}
+            target="_blank"
+            rel="noopener"
+            class="foto card card-hover group block overflow-hidden"
+          >
+            <div class="aspect-square overflow-hidden bg-night-900">
+              <Image
+                src={foto.data.imagen}
+                alt={`${foto.data.titulo} — ${foto.data.autor}`}
+                width={480}
+                height={480}
+                fit="cover"
+                loading={i < 8 ? 'eager' : 'lazy'}
+                class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+              />
+            </div>
+            <div class="p-3">
+              <p class="truncate text-sm font-medium text-fog-100" title={foto.data.titulo}>
+                {foto.data.titulo}
+              </p>
+              <p class="mt-0.5 truncate text-xs text-star-400">{foto.data.autor}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <p id="galeria-vacia" hidden class="mt-10 text-center text-fog-400">
+      No hay fotografías en esta categoría.
+    </p>
+  </div>
+</Base>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  // --- Lightbox ---
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#galeria',
+    children: 'a.foto:not([hidden])',
+    pswpModule: () => import('photoswipe'),
+    closeTitle: 'Cerrar (Esc)',
+    zoomTitle: 'Ampliar',
+    arrowPrevTitle: 'Anterior',
+    arrowNextTitle: 'Siguiente',
+    errorMsg: 'No se pudo cargar la imagen',
+  });
+
+  // Pie con título, autor y equipo dentro del visor
+  lightbox.on('uiRegister', () => {
+    lightbox.pswp?.ui?.registerElement({
+      name: 'pie-foto',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      html: '',
+      onInit: (el, pswp) => {
+        el.className = 'pswp__pie';
+        pswp.on('change', () => {
+          const enlace = pswp.currSlide?.data.element as HTMLElement | undefined;
+          if (!enlace) return;
+          const titulo = enlace.dataset.titulo ?? '';
+          const autor = enlace.dataset.autor ?? '';
+          const equipo = enlace.dataset.equipo ?? '';
+          const fecha = enlace.dataset.fecha ?? '';
+          el.innerHTML = `
+            <p class="pswp__pie-titulo">${titulo}</p>
+            <p class="pswp__pie-autor">${autor}${fecha ? ` · ${fecha}` : ''}</p>
+            ${equipo ? `<p class="pswp__pie-equipo">${equipo}</p>` : ''}`;
+        });
+      },
+    });
+  });
+  lightbox.init();
+
+  // --- Filtros por categoría ---
+  const botones = document.querySelectorAll<HTMLButtonElement>('.filtro-btn');
+  const fotos = document.querySelectorAll<HTMLElement>('#galeria a.foto');
+  const vacio = document.getElementById('galeria-vacia');
+  botones.forEach((boton) => {
+    boton.addEventListener('click', () => {
+      const filtro = boton.dataset.filtro!;
+      botones.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
+      let visibles = 0;
+      fotos.forEach((foto) => {
+        const coincide = filtro === 'todas' || foto.dataset.categoria === filtro;
+        foto.toggleAttribute('hidden', !coincide);
+        if (coincide) visibles++;
+      });
+      vacio?.toggleAttribute('hidden', visibles > 0);
+    });
+  });
+</script>
+
+<style is:global>
+  .pswp__pie {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 14px 18px calc(14px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(5, 7, 13, 0.85), transparent);
+    color: #f2f5fb;
+    pointer-events: none;
+    text-align: left;
+  }
+  .pswp__pie-titulo {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .pswp__pie-autor {
+    color: #f5c163;
+    font-size: 0.85rem;
+    margin-top: 2px;
+  }
+  .pswp__pie-equipo {
+    color: #aab8d0;
+    font-size: 0.8rem;
+    margin-top: 2px;
+  }
+</style>

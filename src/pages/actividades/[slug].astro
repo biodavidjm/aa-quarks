@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { href } from '../../consts';
+
+export async function getStaticPaths() {
+  const actividades = await getCollection('actividades');
+  return actividades.map((actividad) => ({ params: { slug: actividad.id }, props: { actividad } }));
+}
+
+const { actividad } = Astro.props;
+const { Content } = await render(actividad);
+const { data } = actividad;
+---
+
+<Base titulo={data.titulo} descripcion={data.resumen}>
+  <article class="mx-auto max-w-3xl px-4 py-14 sm:px-6">
+    <a href={href('/actividades/')} class="text-sm font-medium text-star-400 hover:text-star-300">
+      ← Todas las actividades
+    </a>
+    <time
+      class="mt-6 block text-xs tracking-widest text-fog-400 uppercase"
+      datetime={data.fecha.toISOString()}
+    >
+      {data.fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' })}
+      {data.historica && ' · Archivo histórico'}
+    </time>
+    <h1 class="heading mt-3 text-3xl sm:text-4xl">{data.titulo}</h1>
+    {data.autor && <p class="mt-3 text-sm text-fog-400">Por {data.autor}</p>}
+
+    {
+      data.imagen && (
+        <figure class="card mt-8 overflow-hidden">
+          <Image
+            src={data.imagen}
+            alt={data.creditoImagen ?? data.titulo}
+            widths={[640, 960]}
+            sizes="(min-width: 768px) 736px, 100vw"
+            class="w-full object-cover"
+          />
+          {data.creditoImagen && <figcaption class="p-3 text-xs text-fog-400">{data.creditoImagen}</figcaption>}
+        </figure>
+      )
+    }
+
+    <div class="prose prose-invert prose-quarks mt-8 max-w-none">
+      <Content />
+    </div>
+  </article>
+</Base>
