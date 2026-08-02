@@ -125,6 +125,7 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
     gallery: '#galeria',
     children: 'a.foto:not([hidden])',
     pswpModule: () => import('photoswipe'),
+    bgOpacity: 0.95,
     closeTitle: 'Cerrar (Esc)',
     zoomTitle: 'Ampliar',
     arrowPrevTitle: 'Anterior',
