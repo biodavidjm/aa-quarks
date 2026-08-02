@@ -1,0 +1,250 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* ==========================================================================
+   Sistema de diseño — Asociación Astronómica Quarks
+   Tema oscuro astronómico: azul noche casi negro, acento ámbar estelar
+   y secundario frío azul hielo. Tokens consumibles como clases Tailwind
+   (bg-night-950, text-star-400, font-display, …).
+   ========================================================================== */
+
+@theme {
+  /* Fondo nocturno (azules muy oscuros) */
+  --color-night-950: #05070d;
+  --color-night-900: #0a0f1c;
+  --color-night-800: #111a2e;
+  --color-night-700: #1c2740;
+  --color-night-600: #2b3a5c;
+
+  /* Texto (grises azulados fríos) */
+  --color-fog-50: #f2f5fb;
+  --color-fog-100: #e4e9f4;
+  --color-fog-200: #cbd5e6;
+  --color-fog-300: #aab8d0;
+  --color-fog-400: #92a2be;
+  --color-fog-500: #6d7d9b;
+
+  /* Acento cálido: ámbar/dorado estelar */
+  --color-star-200: #ffe7b3;
+  --color-star-300: #ffd98f;
+  --color-star-400: #f5c163;
+  --color-star-500: #dfa53f;
+  --color-star-600: #b07f24;
+
+  /* Secundario frío: azul hielo */
+  --color-ice-200: #c8e6ff;
+  --color-ice-300: #a5d8ff;
+  --color-ice-400: #7cc4f8;
+  --color-ice-500: #4da3e0;
+
+  /* Aviso/peligro (banner de seguridad del eclipse) */
+  --color-warn-300: #ffb4a6;
+  --color-warn-400: #ff8a70;
+
+  /* Tipografía */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  accent-color: var(--color-star-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-night-950);
+  color: var(--color-fog-200);
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-star-400);
+  color: var(--color-night-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-star-400);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   Cielo estrellado — solo CSS, tres capas de estrellas en mosaico
+   con parpadeo muy sutil (desactivado con prefers-reduced-motion).
+   ========================================================================== */
+
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%, rgba(28, 39, 64, 0.55), transparent 70%),
+    linear-gradient(to bottom, #080d1a 0%, var(--color-night-950) 45%);
+}
+
+.starfield::before,
+.starfield::after,
+.starfield > i {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* Capa 1 — polvo de estrellas tenue (mosaico 480px) */
+.starfield::before {
+  background-image:
+    radial-gradient(1px 1px at 25px 45px, rgba(226, 235, 250, 0.5), transparent 100%),
+    radial-gradient(1px 1px at 110px 200px, rgba(226, 235, 250, 0.35), transparent 100%),
+    radial-gradient(1px 1px at 190px 90px, rgba(226, 235, 250, 0.45), transparent 100%),
+    radial-gradient(1px 1px at 240px 310px, rgba(226, 235, 250, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 320px 160px, rgba(226, 235, 250, 0.5), transparent 100%),
+    radial-gradient(1px 1px at 370px 420px, rgba(226, 235, 250, 0.35), transparent 100%),
+    radial-gradient(1px 1px at 430px 250px, rgba(226, 235, 250, 0.4), transparent 100%),
+    radial-gradient(1px 1px at 60px 350px, rgba(226, 235, 250, 0.4), transparent 100%),
+    radial-gradient(1px 1px at 150px 440px, rgba(226, 235, 250, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 285px 30px, rgba(226, 235, 250, 0.35), transparent 100%),
+    radial-gradient(1px 1px at 455px 70px, rgba(226, 235, 250, 0.3), transparent 100%),
+    radial-gradient(1px 1px at 90px 120px, rgba(226, 235, 250, 0.25), transparent 100%);
+  background-size: 480px 480px;
+}
+
+/* Capa 2 — estrellas medias, alguna tintada (mosaico 780px) */
+.starfield::after {
+  background-image:
+    radial-gradient(1.5px 1.5px at 90px 130px, rgba(240, 246, 255, 0.7), transparent 100%),
+    radial-gradient(1px 1px at 260px 420px, rgba(165, 216, 255, 0.55), transparent 100%),
+    radial-gradient(1.5px 1.5px at 420px 60px, rgba(240, 246, 255, 0.6), transparent 100%),
+    radial-gradient(1px 1px at 560px 310px, rgba(255, 217, 143, 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 640px 560px, rgba(240, 246, 255, 0.65), transparent 100%),
+    radial-gradient(1px 1px at 190px 640px, rgba(240, 246, 255, 0.5), transparent 100%),
+    radial-gradient(1.5px 1.5px at 720px 190px, rgba(240, 246, 255, 0.55), transparent 100%),
+    radial-gradient(1px 1px at 350px 240px, rgba(240, 246, 255, 0.45), transparent 100%),
+    radial-gradient(1px 1px at 50px 500px, rgba(165, 216, 255, 0.45), transparent 100%),
+    radial-gradient(1.5px 1.5px at 480px 700px, rgba(240, 246, 255, 0.5), transparent 100%);
+  background-size: 780px 780px;
+  animation: twinkle 16s ease-in-out infinite alternate;
+}
+
+/* Capa 3 — estrellas brillantes escasas con halo (mosaico 1200px) */
+.starfield > i {
+  background-image:
+    radial-gradient(2px 2px at 200px 240px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.18) 50%, transparent 100%),
+    radial-gradient(2.5px 2.5px at 620px 90px, rgba(255, 231, 179, 0.9), rgba(255, 231, 179, 0.15) 50%, transparent 100%),
+    radial-gradient(2px 2px at 1020px 470px, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.15) 50%, transparent 100%),
+    radial-gradient(2px 2px at 420px 760px, rgba(200, 230, 255, 0.85), rgba(200, 230, 255, 0.15) 50%, transparent 100%),
+    radial-gradient(2.5px 2.5px at 860px 1020px, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.16) 50%, transparent 100%),
+    radial-gradient(2px 2px at 90px 900px, rgba(255, 217, 143, 0.8), rgba(255, 217, 143, 0.14) 50%, transparent 100%);
+  background-size: 1200px 1200px;
+  animation: twinkle 11s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .starfield::after,
+  .starfield > i {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Utilidades propias
+   ========================================================================== */
+
+/* Titulares con la tipografía de display */
+.heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-fog-50);
+  text-wrap: balance;
+}
+
+/* Etiqueta pequeña en mayúsculas sobre los titulares */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-star-400);
+}
+
+/* Tarjeta base */
+.card {
+  background-color: color-mix(in srgb, var(--color-night-800) 72%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-night-600) 45%, transparent);
+  border-radius: var(--radius-2xl);
+  backdrop-filter: blur(6px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-hover {
+    transition:
+      transform 300ms ease,
+      border-color 300ms ease,
+      box-shadow 300ms ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-star-400) 45%, transparent);
+    box-shadow: 0 12px 40px -12px rgba(245, 193, 99, 0.18);
+  }
+}
+
+/* Prosa de artículos en Markdown (ajuste del plugin typography al tema) */
+.prose-quarks {
+  --tw-prose-body: var(--color-fog-200);
+  --tw-prose-headings: var(--color-fog-50);
+  --tw-prose-lead: var(--color-fog-300);
+  --tw-prose-links: var(--color-star-300);
+  --tw-prose-bold: var(--color-fog-50);
+  --tw-prose-counters: var(--color-star-400);
+  --tw-prose-bullets: var(--color-star-500);
+  --tw-prose-hr: var(--color-night-700);
+  --tw-prose-quotes: var(--color-fog-100);
+  --tw-prose-quote-borders: var(--color-star-500);
+  --tw-prose-captions: var(--color-fog-400);
+  --tw-prose-code: var(--color-ice-300);
+  --tw-prose-pre-code: var(--color-fog-100);
+  --tw-prose-pre-bg: var(--color-night-900);
+  --tw-prose-th-borders: var(--color-night-600);
+  --tw-prose-td-borders: var(--color-night-700);
+}
+
+.prose-quarks h2,
+.prose-quarks h3,
+.prose-quarks h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.prose-quarks a {
+  text-decoration-color: color-mix(in srgb, var(--color-star-400) 50%, transparent);
+  text-underline-offset: 3px;
+}
+
+.prose-quarks a:hover {
+  color: var(--color-star-200);
+}

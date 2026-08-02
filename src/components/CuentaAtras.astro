@@ -1,0 +1,62 @@
+---
+interface Props {
+  /** Instante objetivo en formato ISO con zona horaria. */
+  objetivoISO: string;
+  /** Texto que se muestra cuando llega el momento. */
+  mensajeFinal?: string;
+}
+const { objetivoISO, mensajeFinal = '¡El eclipse ya está aquí!' } = Astro.props;
+---
+
+<div
+  class="cuenta-atras inline-grid grid-cols-4 gap-2 sm:gap-3 text-center"
+  data-objetivo={objetivoISO}
+  data-mensaje={mensajeFinal}
+  role="timer"
+>
+  {
+    [
+      ['dias', 'días'],
+      ['horas', 'horas'],
+      ['minutos', 'min'],
+      ['segundos', 'seg'],
+    ].map(([clave, etiqueta]) => (
+      <div class="card min-w-16 px-2 py-3 sm:min-w-20 sm:px-3 sm:py-4">
+        <span
+          data-unidad={clave}
+          class="block font-display text-3xl font-bold tabular-nums text-star-300 sm:text-4xl"
+        >
+          –
+        </span>
+        <span class="mt-1 block text-[0.7rem] tracking-widest text-fog-400 uppercase">{etiqueta}</span>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  for (const nodo of document.querySelectorAll<HTMLElement>('.cuenta-atras')) {
+    const objetivo = new Date(nodo.dataset.objetivo!).getTime();
+    const unidades = {
+      dias: nodo.querySelector('[data-unidad="dias"]')!,
+      horas: nodo.querySelector('[data-unidad="horas"]')!,
+      minutos: nodo.querySelector('[data-unidad="minutos"]')!,
+      segundos: nodo.querySelector('[data-unidad="segundos"]')!,
+    };
+    const pinta = () => {
+      const resta = objetivo - Date.now();
+      if (resta <= 0) {
+        nodo.outerHTML = `<p class="font-display text-2xl font-semibold text-star-300">${nodo.dataset.mensaje}</p>`;
+        clearInterval(temporizador);
+        return;
+      }
+      const s = Math.floor(resta / 1000);
+      unidades.dias.textContent = String(Math.floor(s / 86400));
+      unidades.horas.textContent = String(Math.floor((s % 86400) / 3600)).padStart(2, '0');
+      unidades.minutos.textContent = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+      unidades.segundos.textContent = String(s % 60).padStart(2, '0');
+    };
+    pinta();
+    const temporizador = setInterval(pinta, 1000);
+  }
+</script>

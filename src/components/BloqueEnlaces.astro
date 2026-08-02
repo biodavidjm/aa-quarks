@@ -1,0 +1,50 @@
+---
+interface Enlace {
+  titulo: string;
+  url: string;
+  descripcion?: string;
+}
+
+interface Props {
+  titulo: string;
+  enlaces: Enlace[] | readonly Enlace[];
+  /** Nota breve bajo el título. */
+  nota?: string;
+  id?: string;
+}
+
+const { titulo, enlaces, nota, id } = Astro.props;
+---
+
+<section class="card p-6 sm:p-7" aria-labelledby={id}>
+  <h3 id={id} class="heading text-xl">{titulo}</h3>
+  {nota && <p class="mt-1.5 text-sm text-fog-400">{nota}</p>}
+  <ul class="mt-4 space-y-3">
+    {
+      enlaces.map((enlace) => (
+        <li>
+          <a
+            href={enlace.url}
+            rel="noopener"
+            class="group flex items-baseline gap-2 text-star-300 transition-colors hover:text-star-200"
+          >
+            <span class="font-medium underline decoration-star-400/40 underline-offset-4 group-hover:decoration-star-300">
+              {enlace.titulo}
+            </span>
+            <svg
+              class="h-3.5 w-3.5 shrink-0 translate-y-0.5 text-fog-500 transition-colors group-hover:text-star-300"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h7v7M13 3 7 9m-2-6H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1" />
+            </svg>
+          </a>
+          {enlace.descripcion && <p class="mt-0.5 text-sm leading-relaxed text-fog-400">{enlace.descripcion}</p>}
+        </li>
+      ))
+    }
+  </ul>
+</section>

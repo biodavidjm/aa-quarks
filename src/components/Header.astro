@@ -1,0 +1,108 @@
+---
+import { SITE, NAV, href } from '../consts';
+
+const rutaActual = Astro.url.pathname;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+/** ¿El enlace corresponde a la página actual (o a una subpágina suya)? */
+function activo(ruta: string): boolean {
+  const completa = `${base}${ruta}`;
+  if (ruta === '/') return rutaActual === completa || rutaActual === `${base}`;
+  return rutaActual.startsWith(completa.replace(/\/$/, ''));
+}
+---
+
+<header class="sticky top-0 z-40 border-b border-night-700/60 bg-night-950/80 backdrop-blur-md">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <a href={href('/')} class="group flex items-center gap-3" aria-label={`${SITE.nombre} — Inicio`}>
+      <img src={href('/logo-aaq.png')} alt="" class="h-10 w-10 rounded-full" width="40" height="40" />
+      <span class="font-display leading-tight">
+        <span class="block text-[0.95rem] font-semibold tracking-wide text-fog-50 group-hover:text-star-300 transition-colors"
+          >A.&#8203;A. Quarks</span
+        >
+        <span class="block text-[0.68rem] tracking-[0.18em] text-fog-400 uppercase">Úbeda · desde 1989</span>
+      </span>
+    </a>
+
+    <nav aria-label="Navegación principal" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={href(item.ruta)}
+                aria-current={activo(item.ruta) ? 'page' : undefined}
+                class:list={[
+                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  activo(item.ruta)
+                    ? 'text-star-300 bg-star-400/10'
+                    : 'text-fog-200 hover:text-fog-50 hover:bg-night-800/80',
+                ]}
+              >
+                {item.etiqueta}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      id="menu-boton"
+      type="button"
+      class="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-lg border border-night-600/60 text-fog-100 hover:bg-night-800"
+      aria-expanded="false"
+      aria-controls="menu-movil"
+    >
+      <span class="sr-only">Abrir menú</span>
+      <svg class="h-5 w-5" data-icono="abrir" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path stroke-linecap="round" d="M3 6h14M3 10h14M3 14h14" />
+      </svg>
+      <svg class="hidden h-5 w-5" data-icono="cerrar" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <path stroke-linecap="round" d="m5 5 10 10M15 5 5 15" />
+      </svg>
+    </button>
+  </div>
+
+  <nav id="menu-movil" aria-label="Navegación principal (móvil)" class="hidden lg:hidden border-t border-night-700/60 bg-night-900/95 backdrop-blur-md">
+    <ul class="mx-auto max-w-6xl px-4 py-3 sm:px-6">
+      {
+        NAV.map((item) => (
+          <li>
+            <a
+              href={href(item.ruta)}
+              aria-current={activo(item.ruta) ? 'page' : undefined}
+              class:list={[
+                'block rounded-lg px-3 py-2.5 text-base font-medium',
+                activo(item.ruta) ? 'text-star-300 bg-star-400/10' : 'text-fog-100 hover:bg-night-800',
+              ]}
+            >
+              {item.etiqueta}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const boton = document.getElementById('menu-boton');
+  const menu = document.getElementById('menu-movil');
+  if (boton && menu) {
+    const iconoAbrir = boton.querySelector('[data-icono="abrir"]');
+    const iconoCerrar = boton.querySelector('[data-icono="cerrar"]');
+    const alternar = (abrir: boolean) => {
+      boton.setAttribute('aria-expanded', String(abrir));
+      menu.classList.toggle('hidden', !abrir);
+      iconoAbrir?.classList.toggle('hidden', abrir);
+      iconoCerrar?.classList.toggle('hidden', !abrir);
+    };
+    boton.addEventListener('click', () => {
+      alternar(boton.getAttribute('aria-expanded') !== 'true');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') alternar(false);
+    });
+  }
+</script>
