@@ -2,7 +2,7 @@
 
 Web oficial de la **Asociación Astronómica Quarks** de Úbeda (Jaén).
 
-- **Web publicada:** <https://biodavidjm.github.io/aa-quarks/>
+- **Web publicada:** <https://www.aaquarks.com>
 - Hecha con [Astro](https://astro.build) y Tailwind CSS. Sitio 100 % estático: no hay
   servidores que mantener ni nada que pagar.
 - El contenido de la antigua web (iWeb, 2009–2015) está recuperado: los textos en
@@ -110,27 +110,31 @@ Otros datos generales (correo, redes sociales, menú) están en
 2. En *Build and deployment* → *Source*, elige **GitHub Actions**.
 3. Sube cualquier cambio a `main` (o lanza el flujo desde *Actions → Desplegar en
    GitHub Pages → Run workflow*). En unos minutos la web estará en
-   <https://biodavidjm.github.io/aa-quarks/>.
+   <https://www.aaquarks.com>.
 
-## Dominio propio (aaquarks.com) — cuando se decida
+## Dominio propio (aaquarks.com) — ya configurado
 
-1. En [`astro.config.mjs`](astro.config.mjs): cambiar `site` a
-   `'https://www.aaquarks.com'` y `base` a `'/'`.
-2. Crear el archivo `public/CNAME` con una única línea: `www.aaquarks.com`.
-3. En GitHub, **Settings → Pages → Custom domain**: escribir `www.aaquarks.com` y
-   activar *Enforce HTTPS* cuando lo permita.
-4. En el proveedor del dominio, configurar los DNS:
+El dominio quedó conectado en agosto de 2026. Por si hubiera que rehacerlo:
+
+1. En [`astro.config.mjs`](astro.config.mjs): `site` es
+   `'https://www.aaquarks.com'` y `base` es `'/'`.
+2. En GitHub, **Settings → Pages → Custom domain**: `www.aaquarks.com`, con
+   *Enforce HTTPS* activado.
+3. En el panel DNS del proveedor (Plesk de ISP Gestión):
    - `www` → registro **CNAME** apuntando a `biodavidjm.github.io`
    - dominio raíz (`aaquarks.com`) → registros **A** a las IP oficiales de GitHub
      Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
      `185.199.111.153`
    ([documentación oficial](https://docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site)).
+   El resto de registros (MX, `mail`, `webmail`, SPF, DMARC, NS…) **no se tocan**:
+   el correo `@aaquarks.com` y el propio DNS siguen dependiendo del servidor del
+   proveedor, así que ese contrato hay que mantenerlo.
 
 ## Para desarrolladores
 
 ```bash
 npm install       # instalar dependencias (Node 22 o superior)
-npm run dev       # servidor local en http://localhost:4321/aa-quarks/
+npm run dev       # servidor local en http://localhost:4321/
 npm run build     # compilar la web en dist/
 npm run preview   # previsualizar la compilación
 ```

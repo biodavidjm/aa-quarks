@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://biodavidjm.github.io/aa-quarks/sitemap-index.xml
+Sitemap: https://www.aaquarks.com/sitemap-index.xml
