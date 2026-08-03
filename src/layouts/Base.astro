@@ -52,6 +52,18 @@ const imagenSocialAbs = new URL(imagenSocial, Astro.site);
     <meta name="twitter:title" content={tituloCompleto} />
     <meta name="twitter:description" content={descripcion} />
     <meta name="twitter:image" content={imagenSocialAbs} />
+
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-7TZKM0RGGC"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-7TZKM0RGGC');
+    </script>
   </head>
   <body class="min-h-dvh flex flex-col">
     <div class="starfield" aria-hidden="true"><i></i></div>
