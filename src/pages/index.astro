@@ -100,9 +100,9 @@ const jsonLd = {
         atardecer que no olvidarás. Te contamos cómo, dónde y con qué protección observarlo.
       </p>
 
-      <div
-        class="mt-6 flex max-w-2xl items-center gap-3 rounded-xl border-2 border-warn-400/70 bg-warn-400/10 px-4 py-3"
-        role="alert"
+      <a
+        href={href('/eclipses/2026/#seguridad')}
+        class="group mt-6 flex max-w-2xl items-center gap-3 rounded-xl border-2 border-warn-400/70 bg-warn-400/10 px-4 py-3 transition-colors hover:bg-warn-400/20"
       >
         <svg
           class="h-8 w-8 shrink-0 text-warn-300"
@@ -121,8 +121,13 @@ const jsonLd = {
         <p class="font-display leading-snug font-semibold text-fog-100 sm:text-lg">
           Y recuerda: <strong class="text-warn-300">nunca mires al eclipse sin gafas de protección
           homologadas</strong>. El daño ocular es grave e irreversible.
+          <span
+            class="mt-1 block text-sm font-medium text-warn-300 underline decoration-warn-400/40 underline-offset-4 group-hover:decoration-warn-300"
+          >
+            Aprende a observarlo con seguridad →
+          </span>
         </p>
-      </div>
+      </a>
 
       <div class="mt-9">
         <CuentaAtras objetivoISO={eclipse.data.inicioISO} />
