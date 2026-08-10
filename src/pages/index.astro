@@ -20,7 +20,7 @@ const actividades = (await getCollection('actividades', ({ data }) => !data.hist
 
 const tarjetas = [
   {
-    titulo: 'Centro de La Fresnedilla',
+    titulo: 'Centro de Observación (La Fresnedilla)',
     texto:
       'Nuestro observatorio y centro de divulgación en plena Sierra de las Villas, construido piedra a piedra por los socios. Ayúdanos a mantenerlo vivo.',
     ruta: '/la-fresnedilla/',
@@ -169,36 +169,7 @@ const jsonLd = {
   <!-- Tarjetas de secciones -->
   <section class="mx-auto max-w-6xl px-4 sm:px-6" aria-label="Secciones destacadas">
     <div class="grid gap-6 sm:grid-cols-2">
-      {
-        tarjetas.map((tarjeta) => (
-          <a href={href(tarjeta.ruta)} class="card card-hover group block overflow-hidden">
-            <div class="aspect-[16/9] overflow-hidden bg-night-900">
-              <Image
-                src={tarjeta.imagen}
-                alt={tarjeta.alt}
-                width={640}
-                height={360}
-                fit="cover"
-                class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
-              />
-            </div>
-            <div class="p-6">
-              <h2 class="font-display text-2xl font-semibold text-fog-50 group-hover:text-star-300 transition-colors">
-                {tarjeta.titulo}
-              </h2>
-              <p class="mt-2 leading-relaxed text-fog-300">{tarjeta.texto}</p>
-              <p class="mt-4 inline-flex items-center gap-1.5 font-display font-medium text-star-400">
-                {tarjeta.cta}
-                <svg class="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
-                </svg>
-              </p>
-            </div>
-          </a>
-        ))
-      }
-
-      <!-- Blog: tarjeta ancha que cierra la rejilla -->
+      <!-- Blog: tarjeta ancha que abre la rejilla -->
       <a href={href('/blog/')} class="card card-hover group block overflow-hidden sm:col-span-2 md:flex">
         <div class="aspect-[16/9] overflow-hidden bg-night-900 md:aspect-auto md:w-2/5">
           <Image
@@ -227,6 +198,34 @@ const jsonLd = {
           </p>
         </div>
       </a>
+      {
+        tarjetas.map((tarjeta) => (
+          <a href={href(tarjeta.ruta)} class="card card-hover group block overflow-hidden">
+            <div class="aspect-[16/9] overflow-hidden bg-night-900">
+              <Image
+                src={tarjeta.imagen}
+                alt={tarjeta.alt}
+                width={640}
+                height={360}
+                fit="cover"
+                class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+              />
+            </div>
+            <div class="p-6">
+              <h2 class="font-display text-2xl font-semibold text-fog-50 group-hover:text-star-300 transition-colors">
+                {tarjeta.titulo}
+              </h2>
+              <p class="mt-2 leading-relaxed text-fog-300">{tarjeta.texto}</p>
+              <p class="mt-4 inline-flex items-center gap-1.5 font-display font-medium text-star-400">
+                {tarjeta.cta}
+                <svg class="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
+                </svg>
+              </p>
+            </div>
+          </a>
+        ))
+      }
     </div>
   </section>
 
