@@ -55,6 +55,12 @@ html {
   accent-color: var(--color-star-400);
 }
 
+/* Al saltar a un ancla (#seguridad, #tiendas…), la cabecera fija no debe
+   tapar el principio de la sección de destino. */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
