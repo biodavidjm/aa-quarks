@@ -39,7 +39,7 @@ const año = new Date().getFullYear();
         {
           REDES.map((red) => (
             <li>
-              <a class="transition-colors hover:text-star-300" href={red.url} rel="noopener">
+              <a class="transition-colors hover:text-star-300" href={red.url} target="_blank" rel="noopener">
                 {red.nombre} — {red.usuario}
               </a>
             </li>
@@ -57,6 +57,7 @@ const año = new Date().getFullYear();
         licencia <a
           class="underline decoration-fog-500/50 underline-offset-2 transition-colors hover:text-star-300"
           href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.es"
+          target="_blank"
           rel="license noopener">CC BY-NC-ND 4.0</a
         >, como la web original de la asociación.
       </p>

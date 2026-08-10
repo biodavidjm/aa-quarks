@@ -170,7 +170,7 @@ const fases = [
             data.libros.map((libro) => (
               <li>
                 {libro.url ? (
-                  <a href={libro.url} rel="noopener" class="font-medium text-star-300 underline decoration-star-400/40 underline-offset-4 hover:text-star-200">
+                  <a href={libro.url} target="_blank" rel="noopener" class="font-medium text-star-300 underline decoration-star-400/40 underline-offset-4 hover:text-star-200">
                     {libro.titulo}
                   </a>
                 ) : (
