@@ -9,6 +9,7 @@ import fotoFresnedilla from '../assets/fresnedilla/hero-centro.jpg';
 import fotoPlanetario from '../assets/planetario/panoramica.jpg';
 import fotoM31 from '../assets/astrofotografia/emilio-hidalgo-galaxia-de-andromeda-m31.jpg';
 import fotoSimulacion from '../assets/simulaciones/pluto-new-horizons.png';
+import fotoBlog from '../assets/blog/2015/01/2014-Q2-Rolando-Ligustri.jpg';
 
 const eclipse = await getEntry('eclipses', '2026');
 if (!eclipse) throw new Error('Falta el contenido del eclipse 2026');
@@ -196,6 +197,36 @@ const jsonLd = {
           </a>
         ))
       }
+
+      <!-- Blog: tarjeta ancha que cierra la rejilla -->
+      <a href={href('/blog/')} class="card card-hover group block overflow-hidden sm:col-span-2 md:flex">
+        <div class="aspect-[16/9] overflow-hidden bg-night-900 md:aspect-auto md:w-2/5">
+          <Image
+            src={fotoBlog}
+            alt="El cometa C/2014 Q2 (Lovejoy), protagonista de la primera entrada del blog"
+            width={640}
+            height={360}
+            fit="cover"
+            class="h-full w-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+          />
+        </div>
+        <div class="p-6 md:flex-1 md:self-center">
+          <h2 class="font-display text-2xl font-semibold text-fog-50 transition-colors group-hover:text-star-300">
+            Blog
+          </h2>
+          <p class="mt-2 leading-relaxed text-fog-300">
+            Más de una década de entradas recuperadas de nuestra web anterior (2014–2026):
+            crónicas de actividades, las Jornadas de la Ciencia, cometas, eclipses y el cielo
+            de cada mes, con filtros por año y temática.
+          </p>
+          <p class="mt-4 inline-flex items-center gap-1.5 font-display font-medium text-star-400">
+            Leer el blog
+            <svg class="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
+            </svg>
+          </p>
+        </div>
+      </a>
     </div>
   </section>
 

@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { href } from '../../consts';
+
+export async function getStaticPaths() {
+  const entradas = await getCollection('blog');
+  return entradas.map((entrada) => ({ params: { slug: entrada.id }, props: { entrada } }));
+}
+
+const { entrada } = Astro.props;
+const { data } = entrada;
+const { Content } = await render(entrada);
+
+const fechaLarga = data.fecha.toLocaleDateString('es-ES', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'Europe/Madrid',
+});
+---
+
+<Base titulo={data.titulo} descripcion={data.resumen}>
+  <article class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <nav aria-label="Miga de pan">
+      <a
+        href={href('/blog/')}
+        class="inline-flex items-center gap-1.5 font-display text-sm font-medium text-star-400 transition-colors hover:text-star-300"
+      >
+        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 10H4m0 0 4.5-4.5M4 10l4.5 4.5" />
+        </svg>
+        Blog
+      </a>
+    </nav>
+
+    <header class="mt-6 max-w-3xl">
+      <p class="eyebrow">
+        <time datetime={data.fecha.toISOString()}>{fechaLarga}</time>
+        {data.categorias.length > 0 && <> · {data.categorias.join(' · ')}</>}
+      </p>
+      <h1 class="heading mt-3 text-3xl leading-tight sm:text-4xl">{data.titulo}</h1>
+    </header>
+
+    <div class="prose prose-invert prose-quarks mt-8 max-w-3xl">
+      <Content />
+    </div>
+
+    {
+      data.etiquetas.length > 0 && (
+        <p class="mt-10 flex max-w-3xl flex-wrap gap-2" aria-label="Etiquetas">
+          {data.etiquetas.map((etiqueta) => (
+            <span class="rounded-full border border-night-600 px-3 py-1 text-xs font-medium text-fog-300">
+              {etiqueta}
+            </span>
+          ))}
+        </p>
+      )
+    }
+
+    <p class="mt-10 border-t border-night-700/60 pt-6 text-sm leading-relaxed text-fog-500">
+      Esta entrada procede del blog de nuestra web anterior y se conserva tal como se publicó:
+      puede contener información o enlaces desactualizados.
+    </p>
+  </article>
+</Base>

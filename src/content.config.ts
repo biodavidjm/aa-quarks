@@ -101,6 +101,24 @@ const actividades = defineCollection({
     }),
 });
 
+/**
+ * Blog histórico (2014–2026), recuperado del WordPress antiguo con
+ * `_antigua-web`. Un archivo .md por entrada; el nombre del archivo es el
+ * slug de la URL (/blog/<archivo>/).
+ */
+const blog = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/blog' }),
+  schema: ({ image }) =>
+    z.object({
+      titulo: z.string(),
+      fecha: z.coerce.date(),
+      resumen: z.string(),
+      categorias: z.array(z.string()).default([]),
+      etiquetas: z.array(z.string()).default([]),
+      imagen: image().optional(),
+    }),
+});
+
 /** Páginas largas (asociación, fresnedilla, planetario): prosa en Markdown. */
 const paginas = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/paginas' }),
@@ -112,4 +130,4 @@ const paginas = defineCollection({
     .passthrough(),
 });
 
-export const collections = { eclipses, astrofotos, simulaciones, actividades, paginas };
+export const collections = { eclipses, astrofotos, simulaciones, actividades, blog, paginas };
