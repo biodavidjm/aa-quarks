@@ -33,12 +33,13 @@ export const REDES = [
 export const NAV = [
   { etiqueta: 'Inicio', ruta: '/' },
   { etiqueta: 'Eclipse 2026', ruta: '/eclipses/2026/' },
-  { etiqueta: 'La Fresnedilla', ruta: '/la-fresnedilla/' },
+  { etiqueta: 'Observatorio', ruta: '/la-fresnedilla/' },
   { etiqueta: 'Planetario', ruta: '/planetario/' },
   { etiqueta: 'Astrofotografía', ruta: '/astrofotografia/' },
   { etiqueta: 'Simulaciones', ruta: '/simulaciones/' },
   { etiqueta: 'La Asociación', ruta: '/asociacion/' },
   { etiqueta: 'Actividades', ruta: '/actividades/' },
+  { etiqueta: 'Blog', ruta: '/blog/' },
 ] as const;
 
 /**

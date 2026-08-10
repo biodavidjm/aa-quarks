@@ -4,6 +4,9 @@ import { SITE, NAV, href } from '../consts';
 const rutaActual = Astro.url.pathname;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+/* En escritorio el logo ya lleva a la portada: «Inicio» solo sale en el móvil. */
+const navEscritorio = NAV.filter((item) => item.ruta !== '/');
+
 /** ¿El enlace corresponde a la página actual (o a una subpágina suya)? */
 function activo(ruta: string): boolean {
   const completa = `${base}${ruta}`;
@@ -27,13 +30,13 @@ function activo(ruta: string): boolean {
     <nav aria-label="Navegación principal" class="hidden lg:block">
       <ul class="flex items-center gap-1">
         {
-          NAV.map((item) => (
+          navEscritorio.map((item) => (
             <li>
               <a
                 href={href(item.ruta)}
                 aria-current={activo(item.ruta) ? 'page' : undefined}
                 class:list={[
-                  'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                  'rounded-lg px-2 py-2 text-[0.8rem] font-medium transition-colors xl:px-3 xl:text-sm',
                   activo(item.ruta)
                     ? 'text-star-300 bg-star-400/10'
                     : 'text-fog-200 hover:text-fog-50 hover:bg-night-800/80',
