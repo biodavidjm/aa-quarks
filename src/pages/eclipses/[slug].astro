@@ -40,6 +40,19 @@ const fases = [
       <p class="eyebrow">{fechaLarga} · Úbeda</p>
       <h1 class="heading mt-3 max-w-3xl text-4xl sm:text-5xl">{data.titulo}</h1>
       {data.subtitulo && <p class="mt-4 max-w-2xl text-lg leading-relaxed text-fog-300">{data.subtitulo}</p>}
+      {
+        data.apunte && (
+          <p class="mt-3 max-w-2xl leading-relaxed text-fog-300">
+            {data.apunte.texto}{' '}
+            <a
+              href={href(data.apunte.enlace.ruta)}
+              class="font-medium whitespace-nowrap text-star-300 underline decoration-star-400/40 underline-offset-4 transition-colors hover:text-star-200"
+            >
+              {data.apunte.enlace.etiqueta} →
+            </a>
+          </p>
+        )
+      }
 
       <div class="mt-8">
         <p class="mb-3 text-sm tracking-widest text-fog-400 uppercase">Comienza en</p>

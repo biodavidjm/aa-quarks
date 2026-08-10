@@ -20,6 +20,13 @@ const eclipses = defineCollection({
   schema: z.object({
     titulo: z.string(),
     subtitulo: z.string().optional(),
+    /** Frase breve bajo el subtítulo con un enlace interno (p. ej. a una entrada del blog). */
+    apunte: z
+      .object({
+        texto: z.string(),
+        enlace: z.object({ etiqueta: z.string(), ruta: z.string() }),
+      })
+      .optional(),
     fecha: z.coerce.date(),
     /** Instante local del inicio (ISO con zona horaria) para la cuenta atrás. */
     inicioISO: z.string(),
