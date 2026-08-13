@@ -22,7 +22,7 @@ a través de los orificios de una persiana. La cita salió en el *Ideal de Jaén
 *Úbeda Información*.
 
 Quince años después, la historia se repite a lo grande: el
-[12 de agosto de 2026](../../eclipses/2026/) veremos desde Úbeda un eclipse del
+[12 de agosto de 2026](../../blog/eclipse-de-sol-del-12-de-agosto-de-2026/) veremos desde Úbeda un eclipse del
 97,2 %, también con el Sol rozando el horizonte.
 
 *Entrada recuperada del archivo de la web antigua de la asociación.*

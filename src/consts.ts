@@ -32,7 +32,7 @@ export const REDES = [
 /** Navegación principal (el orden importa). */
 export const NAV = [
   { etiqueta: 'Inicio', ruta: '/' },
-  { etiqueta: 'Eclipse 2026', ruta: '/eclipses/2026/' },
+  { etiqueta: 'Eclipse 2027', ruta: '/eclipses/2027/' },
   { etiqueta: 'Observatorio', ruta: '/la-fresnedilla/' },
   { etiqueta: 'Planetario', ruta: '/planetario/' },
   { etiqueta: 'Astrofotografía', ruta: '/astrofotografia/' },

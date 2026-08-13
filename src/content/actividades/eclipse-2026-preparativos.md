@@ -24,7 +24,7 @@ Mientras tanto, tres deberes para ir haciendo:
 2. **Busca tu sitio**: hace falta horizonte oeste-noroeste despejado, porque el Sol
    estará muy bajo. El plano municipal recomienda el Cerro de la Atalaya, Santa
    Eulalia y el entorno del Cuartel de la Guardia Civil.
-3. **Lee nuestra [guía completa del eclipse](../../eclipses/2026/)**, con los
+3. **Lee nuestra [guía completa del eclipse](../../blog/eclipse-de-sol-del-12-de-agosto-de-2026/)**, con los
    horarios exactos, la infografía oficial descargable y todos los enlaces útiles.
 
 No será nuestro primer eclipse: en enero de 2011 la asociación ya observó desde la

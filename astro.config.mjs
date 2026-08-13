@@ -13,6 +13,11 @@ export default defineConfig({
   site: 'https://www.aaquarks.com',
   base: '/',
 
+  // La guía del eclipse de 2026 pasó al blog como archivo tras el eclipse.
+  redirects: {
+    '/eclipses/2026/': '/blog/eclipse-de-sol-del-12-de-agosto-de-2026/',
+  },
+
   integrations: [sitemap()],
 
   vite: {
