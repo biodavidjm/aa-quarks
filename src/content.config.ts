@@ -123,6 +123,9 @@ const blog = defineCollection({
       categorias: z.array(z.string()).default([]),
       etiquetas: z.array(z.string()).default([]),
       imagen: image().optional(),
+      /** Las entradas rescatadas de la web antigua llevan un aviso de archivo;
+       *  las escritas ya en esta web ponen `archivada: false`. */
+      archivada: z.boolean().default(true),
     }),
 });
 

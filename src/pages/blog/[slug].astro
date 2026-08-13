@@ -58,9 +58,13 @@ const fechaLarga = data.fecha.toLocaleDateString('es-ES', {
       )
     }
 
-    <p class="mt-10 border-t border-night-700/60 pt-6 text-sm leading-relaxed text-fog-500">
-      Esta entrada procede del blog de nuestra web anterior y se conserva tal como se publicó:
-      puede contener información o enlaces desactualizados.
-    </p>
+    {
+      data.archivada && (
+        <p class="mt-10 border-t border-night-700/60 pt-6 text-sm leading-relaxed text-fog-500">
+          Esta entrada procede del blog de nuestra web anterior y se conserva tal como se publicó:
+          puede contener información o enlaces desactualizados.
+        </p>
+      )
+    }
   </article>
 </Base>
