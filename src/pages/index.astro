@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import CuentaAtras from '../components/CuentaAtras.astro';
@@ -11,8 +11,18 @@ import fotoM31 from '../assets/astrofotografia/emilio-hidalgo-galaxia-de-androme
 import fotoSimulacion from '../assets/simulaciones/pluto-new-horizons.png';
 import fotoBlog from '../assets/blog/2015/01/2014-Q2-Rolando-Ligustri.jpg';
 
-const eclipse = await getEntry('eclipses', '2026');
-if (!eclipse) throw new Error('Falta el contenido del eclipse 2026');
+/**
+ * Segundo eclipse del trío ibérico: total por la costa andaluza, parcial muy
+ * profundo en Úbeda. Circunstancias locales calculadas con las efemérides
+ * DE421 y validadas con los datos oficiales del IGN para el eclipse de 2026
+ * (coinciden en ±2 s y ±0,03 puntos): inicio 09:43, máximo 10:50 con el
+ * 96,3 % del Sol oculto a 40° de altura, fin 12:04.
+ */
+const eclipse2027 = {
+  titulo: 'Eclipse total de Sol del 2 de agosto de 2027',
+  inicioISO: '2027-08-02T09:43:00+02:00',
+  oscurecimiento: '96,3 %',
+};
 
 const actividades = (await getCollection('actividades', ({ data }) => !data.historica))
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
@@ -70,8 +80,8 @@ const jsonLd = {
     },
     {
       '@type': 'Event',
-      name: `${eclipse.data.titulo} (visible desde Úbeda)`,
-      startDate: eclipse.data.inicioISO,
+      name: `${eclipse2027.titulo} (visible desde Úbeda)`,
+      startDate: eclipse2027.inicioISO,
       eventStatus: 'https://schema.org/EventScheduled',
       eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       location: { '@type': 'Place', name: 'Úbeda', address: { '@type': 'PostalAddress', addressLocality: 'Úbeda', addressRegion: 'Jaén', addressCountry: 'ES' } },
@@ -105,19 +115,22 @@ const jsonLd = {
           > de Úbeda
         </p>
       </div>
-      <p class="eyebrow mt-7">12 de agosto de 2026 · Úbeda</p>
+      <p class="eyebrow mt-7">2 de agosto de 2027 · Úbeda</p>
       <h1 class="heading mt-4 max-w-3xl text-4xl leading-[1.08] sm:text-6xl">
-        El gran eclipse de Sol<br />
-        <span class="text-star-300">ya está en camino</span>
+        El primero del trío ya pasó:<br />
+        <span class="text-star-300">el segundo está en camino</span>
       </h1>
       <p class="mt-5 max-w-2xl text-lg leading-relaxed text-fog-300">
-        España vivirá su primer eclipse total de Sol en más de un siglo. Desde Úbeda veremos
-        el <strong class="text-fog-100">97,2&nbsp;% del Sol oculto</strong> justo antes del ocaso: un
-        atardecer que no olvidarás. Te contamos cómo, dónde y con qué protección observarlo.
+        El 12 de agosto de 2026 vivimos desde Úbeda un atardecer histórico con el 97,2&nbsp;% del
+        Sol oculto. Ahora toca esperar al segundo eclipse del trío
+        ibérico: el <strong class="text-fog-100">2 de agosto de 2027</strong>, un eclipse total de
+        Sol recorrerá toda la costa andaluza, y desde Úbeda
+        veremos el <strong class="text-fog-100">{eclipse2027.oscurecimiento} del Sol oculto</strong>,
+        esta vez a media mañana. Tenemos un año para prepararlo.
       </p>
 
       <a
-        href={href('/eclipses/2026/#seguridad')}
+        href={href('/eclipses/2027/#seguridad')}
         class="group mt-6 flex max-w-2xl items-center gap-3 rounded-xl border-2 border-warn-400/70 bg-warn-400/10 px-4 py-3 transition-colors hover:bg-warn-400/20"
       >
         <svg
@@ -146,21 +159,24 @@ const jsonLd = {
       </a>
 
       <div class="mt-9">
-        <CuentaAtras objetivoISO={eclipse.data.inicioISO} />
+        <p class="mb-3 text-sm font-semibold tracking-widest text-fog-400 uppercase">
+          Cuenta atrás para el <span class="text-star-300">segundo eclipse</span> · <span class="text-star-300">2 de agosto de 2027</span>
+        </p>
+        <CuentaAtras objetivoISO={eclipse2027.inicioISO} />
       </div>
 
       <div class="mt-9 flex flex-wrap items-center gap-4">
         <a
-          href={href('/eclipses/2026/')}
+          href={href('/eclipses/2027/')}
           class="inline-flex items-center gap-2 rounded-xl bg-star-400 px-6 py-3.5 font-display text-lg font-semibold text-night-950 shadow-lg shadow-star-400/20 transition-colors hover:bg-star-300"
         >
-          Todo sobre el eclipse
+          Todo sobre el eclipse de 2027
           <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
           </svg>
         </a>
         <p class="max-w-56 text-sm leading-snug text-fog-400">
-          Con horarios locales, puntos de observación y dónde comprar gafas homologadas.
+          Con la información oficial del IGN y dónde comprar gafas homologadas.
         </p>
       </div>
     </div>
