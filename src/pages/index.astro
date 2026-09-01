@@ -98,7 +98,7 @@ const jsonLd = {
   <!-- HERO: eclipse del 12 de agosto de 2026 -->
   <section class="relative overflow-hidden">
     <div class="relative mx-auto max-w-6xl px-4 pt-16 pb-14 sm:px-6 sm:pt-24 sm:pb-20">
-      <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
+      <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_clamp(380px,40vw,560px)] lg:gap-16">
         <div class="min-w-0">
       <div class="flex items-center gap-3">
         <img
@@ -129,42 +129,6 @@ const jsonLd = {
         esta vez a media mañana. Tenemos un año para prepararlo.
       </p>
 
-      <a
-        href={href('/eclipses/2027/#seguridad')}
-        class="group mt-6 flex max-w-2xl items-center gap-3 rounded-xl border-2 border-warn-400/70 bg-warn-400/10 px-4 py-3 transition-colors hover:bg-warn-400/20"
-      >
-        <svg
-          class="h-8 w-8 shrink-0 text-warn-300"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          aria-hidden="true"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
-          ></path>
-        </svg>
-        <p class="font-display leading-snug font-semibold text-fog-100 sm:text-lg">
-          Y recuerda: <strong class="text-warn-300">nunca mires al eclipse sin gafas de protección
-          homologadas</strong>. El daño ocular es grave e irreversible.
-          <span
-            class="mt-1 block text-sm font-medium text-warn-300 underline decoration-warn-400/40 underline-offset-4 group-hover:decoration-warn-300"
-          >
-            Aprende a observarlo con seguridad →
-          </span>
-        </p>
-      </a>
-
-      <div class="mt-9">
-        <p class="mb-3 text-sm font-semibold tracking-widest text-fog-400 uppercase">
-          Cuenta atrás para el <span class="text-star-300">segundo eclipse</span> · <span class="text-star-300">2 de agosto de 2027</span>
-        </p>
-        <CuentaAtras objetivoISO={eclipse2027.inicioISO} />
-      </div>
-
       <div class="mt-9 flex flex-wrap items-center gap-4">
         <a
           href={href('/eclipses/2027/')}
@@ -175,13 +139,10 @@ const jsonLd = {
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
           </svg>
         </a>
-        <p class="max-w-56 text-sm leading-snug text-fog-400">
-          Con la información oficial del IGN y dónde comprar gafas homologadas.
-        </p>
       </div>
         </div>
 
-        <figure class="mx-auto w-full max-w-sm lg:mx-0 lg:sticky lg:top-24">
+        <figure class="mx-auto w-full max-w-md lg:mx-0 lg:max-w-none lg:sticky lg:top-24">
           <div class="card overflow-hidden p-2 ring-1 ring-star-400/15">
             <Image
               src={fotoEclipse}
@@ -197,6 +158,44 @@ const jsonLd = {
             Santuario de la Virgen del Acebo. Fotografía de Antonio Herrera (Seestar&nbsp;S50).
           </figcaption>
         </figure>
+      </div>
+
+      <div class="mt-10 grid items-center gap-6 lg:grid-cols-2">
+        <a
+          href={href('/eclipses/2027/#seguridad')}
+          class="group flex items-center gap-3 rounded-xl border-2 border-warn-400/70 bg-warn-400/10 px-4 py-3.5 transition-colors hover:bg-warn-400/20"
+        >
+          <svg
+            class="h-8 w-8 shrink-0 text-warn-300"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
+            ></path>
+          </svg>
+          <p class="font-display leading-snug font-semibold text-fog-100 sm:text-lg">
+            Y recuerda: <strong class="text-warn-300">nunca mires al eclipse sin gafas de protección
+            homologadas</strong>. El daño ocular es grave e irreversible.
+            <span
+              class="mt-1 block text-sm font-medium text-warn-300 underline decoration-warn-400/40 underline-offset-4 group-hover:decoration-warn-300"
+            >
+              Aprende a observarlo con seguridad →
+            </span>
+          </p>
+        </a>
+
+        <div class="lg:justify-self-end">
+          <p class="mb-3 text-sm font-semibold tracking-widest text-fog-400 uppercase">
+            Cuenta atrás para el <span class="text-star-300">segundo eclipse</span> · <span class="text-star-300">2 de agosto de 2027</span>
+          </p>
+          <CuentaAtras objetivoISO={eclipse2027.inicioISO} />
+        </div>
       </div>
     </div>
   </section>
