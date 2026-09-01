@@ -7,9 +7,10 @@ import { SITE, href } from '../consts';
 
 import fotoFresnedilla from '../assets/fresnedilla/hero-centro.jpg';
 import fotoPlanetario from '../assets/planetario/panoramica.jpg';
-import fotoM31 from '../assets/astrofotografia/emilio-hidalgo-galaxia-de-andromeda-m31.jpg';
+import fotoLuna from '../assets/astrofotografia/varios-autores-la-luna.jpg';
 import fotoSimulacion from '../assets/simulaciones/pluto-new-horizons.png';
 import fotoBlog from '../assets/blog/2015/01/2014-Q2-Rolando-Ligustri.jpg';
+import fotoEclipse from '../assets/astrofotografia/antonio-herrera-eclipse-total-de-sol-2026.jpg';
 
 /**
  * Segundo eclipse del trío ibérico: total por la costa andaluza, parcial muy
@@ -30,6 +31,15 @@ const actividades = (await getCollection('actividades', ({ data }) => !data.hist
 
 const tarjetas = [
   {
+    titulo: 'Astrofotografía',
+    texto:
+      'Galaxias, cometas, la Luna y el Sol fotografiados desde la provincia de Jaén por los socios. Más de 150 imágenes con su autor y su historia.',
+    ruta: '/astrofotografia/',
+    cta: 'Abrir la galería',
+    imagen: fotoLuna,
+    alt: 'La Luna fotografiada por los socios de la asociación',
+  },
+  {
     titulo: 'Centro de Observación (La Fresnedilla)',
     texto:
       'Nuestro observatorio y centro de divulgación en plena Sierra de las Villas, construido piedra a piedra por los socios. Ayúdanos a mantenerlo vivo.',
@@ -46,15 +56,6 @@ const tarjetas = [
     cta: 'Visítalo',
     imagen: fotoPlanetario,
     alt: 'Interior del Planetario de Úbeda: butacas circulares alrededor del proyector bajo la cúpula',
-  },
-  {
-    titulo: 'Astrofotografía',
-    texto:
-      'Galaxias, cometas, la Luna y el Sol fotografiados desde la provincia de Jaén por los socios. Más de 150 imágenes con su autor y su historia.',
-    ruta: '/astrofotografia/',
-    cta: 'Abrir la galería',
-    imagen: fotoM31,
-    alt: 'La galaxia de Andrómeda (M31) fotografiada por Emilio Hidalgo',
   },
   {
     titulo: 'Simulaciones',
@@ -96,10 +97,9 @@ const jsonLd = {
 
   <!-- HERO: eclipse del 12 de agosto de 2026 -->
   <section class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="hero-eclipse"></div>
-    </div>
     <div class="relative mx-auto max-w-6xl px-4 pt-16 pb-14 sm:px-6 sm:pt-24 sm:pb-20">
+      <div class="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-16">
+        <div class="min-w-0">
       <div class="flex items-center gap-3">
         <img
           src={href('/logo-aaq.png')}
@@ -178,6 +178,25 @@ const jsonLd = {
         <p class="max-w-56 text-sm leading-snug text-fog-400">
           Con la información oficial del IGN y dónde comprar gafas homologadas.
         </p>
+      </div>
+        </div>
+
+        <figure class="mx-auto w-full max-w-sm lg:mx-0 lg:sticky lg:top-24">
+          <div class="card overflow-hidden p-2 ring-1 ring-star-400/15">
+            <Image
+              src={fotoEclipse}
+              alt="Eclipse total de Sol del 12 de agosto de 2026 fotografiado por Antonio Herrera: la corona y las protuberancias rojas rodean el disco negro de la Luna"
+              width={760}
+              height={760}
+              loading="eager"
+              class="w-full rounded-xl"
+            />
+          </div>
+          <figcaption class="mt-3 text-center text-xs leading-snug text-fog-400">
+            El eclipse del <strong class="text-fog-200">12 de agosto de 2026</strong> desde el
+            Santuario de la Virgen del Acebo. Fotografía de Antonio Herrera (Seestar&nbsp;S50).
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -294,29 +313,4 @@ const jsonLd = {
   </section>
 </Base>
 
-<style>
-  /* Sol eclipsado con corona, dibujado solo con CSS */
-  .hero-eclipse {
-    position: absolute;
-    top: 30px;
-    right: -120px;
-    width: 520px;
-    height: 520px;
-    border-radius: 50%;
-    background: radial-gradient(circle, #05070d 57%, transparent 59%);
-    box-shadow:
-      0 0 50px 14px rgba(245, 193, 99, 0.35),
-      0 0 180px 70px rgba(245, 193, 99, 0.12),
-      inset 0 0 0 4px rgba(255, 231, 179, 0.8);
-    opacity: 0.9;
-  }
-  @media (max-width: 1024px) {
-    .hero-eclipse {
-      width: 300px;
-      height: 300px;
-      top: -60px;
-      right: -120px;
-      opacity: 0.55;
-    }
-  }
-</style>
+
