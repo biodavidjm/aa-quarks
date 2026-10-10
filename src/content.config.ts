@@ -103,6 +103,8 @@ const actividades = defineCollection({
       resumen: z.string(),
       imagen: image().optional(),
       creditoImagen: z.string().optional(),
+      /** Cartel vertical de la actividad: se muestra pequeño y se amplía al pulsarlo. */
+      cartel: image().optional(),
       autor: z.string().optional(),
       historica: z.boolean().default(false),
     }),

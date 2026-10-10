@@ -11,6 +11,7 @@ import fotoLuna from '../assets/astrofotografia/varios-autores-la-luna.jpg';
 import fotoSimulacion from '../assets/simulaciones/pluto-new-horizons.png';
 import fotoBlog from '../assets/blog/2015/01/2014-Q2-Rolando-Ligustri.jpg';
 import fotoEclipse from '../assets/astrofotografia/antonio-herrera-eclipse-total-de-sol-2026.jpg';
+import cartelSemana from '../assets/actividades/cartel-iv-semana-andaluza-astronomia-2026.jpg';
 
 /**
  * Segundo eclipse del trío ibérico: total por la costa andaluza, parcial muy
@@ -24,6 +25,14 @@ const eclipse2027 = {
   inicioISO: '2027-08-02T09:43:00+02:00',
   oscurecimiento: '96,3 %',
 };
+
+/**
+ * AVISO TEMPORAL — observación pública del 17 de octubre de 2026 (IV Semana
+ * Andaluza de la Astronomía). Se oculta solo en el primer despliegue posterior
+ * al evento; para quitarlo a mano, borra esta constante, el import de
+ * `cartelSemana` y el bloque «AVISO TEMPORAL» del marcado.
+ */
+const mostrarSemanaAstronomia = Date.now() < new Date('2026-10-18T00:00:00+02:00').getTime();
 
 const actividades = (await getCollection('actividades', ({ data }) => !data.historica))
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
@@ -94,6 +103,41 @@ const jsonLd = {
 
 <Base>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+
+  <!-- AVISO TEMPORAL: observación pública del 17/10/2026 (quitar después del evento) -->
+  {
+    mostrarSemanaAstronomia && (
+      <section class="mx-auto max-w-6xl px-4 pt-6 sm:px-6 sm:pt-8" aria-label="Próxima actividad">
+        <a
+          href={href('/actividades/observacion-publica-semana-andaluza-astronomia-2026/')}
+          class="card card-hover group flex items-center gap-4 border-star-400/50 p-3 ring-1 ring-star-400/20 sm:gap-6 sm:p-4"
+        >
+          <Image
+            src={cartelSemana}
+            alt="Cartel de la IV Semana Andaluza de la Astronomía"
+            widths={[96, 192]}
+            sizes="96px"
+            class="w-16 shrink-0 rounded-lg sm:w-24"
+          />
+          <div class="min-w-0 flex-1">
+            <p class="eyebrow">Sábado 17 de octubre</p>
+            <h2 class="mt-1 font-display text-lg leading-snug font-semibold text-fog-50 transition-colors group-hover:text-star-300 sm:text-2xl">
+              Observación pública en las Eras del Alcázar
+            </h2>
+            <p class="mt-1 text-sm leading-relaxed text-fog-300 sm:text-base">
+              De 20:00 a 22:00 h, dentro de la IV Semana Andaluza de la Astronomía. Sin conocimientos previos.
+            </p>
+          </div>
+          <span class="hidden shrink-0 items-center gap-1.5 font-display font-medium text-star-400 md:inline-flex">
+            Más información
+            <svg class="h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 10h12m0 0-4.5-4.5M16 10l-4.5 4.5" />
+            </svg>
+          </span>
+        </a>
+      </section>
+    )
+  }
 
   <!-- HERO: eclipse del 12 de agosto de 2026 -->
   <section class="relative overflow-hidden">
