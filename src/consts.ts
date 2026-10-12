@@ -42,6 +42,15 @@ export const NAV = [
   { etiqueta: 'Blog', ruta: '/blog/' },
 ] as const;
 
+/** Días que una foto recién subida a la galería se considera «novedad». */
+const DIAS_NOVEDAD = 30;
+
+/** ¿Se publicó hace menos de `DIAS_NOVEDAD` días? (se evalúa al compilar la web). */
+export function esNovedad(publicada?: Date): boolean {
+  if (!publicada) return false;
+  return Date.now() - publicada.getTime() < DIAS_NOVEDAD * 24 * 60 * 60 * 1000;
+}
+
 /**
  * Construye una URL interna respetando el `base` configurado
  * (en GitHub Pages el sitio cuelga de /aa-quarks/).

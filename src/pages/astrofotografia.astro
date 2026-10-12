@@ -2,8 +2,18 @@
 import { getCollection } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import { esNovedad } from '../consts';
 
+/* Primero las novedades (las más recientes delante), luego las destacadas y
+   después el resto por autor y título. */
 const fotos = (await getCollection('astrofotos')).sort((a, b) => {
+  const nuevaA = esNovedad(a.data.publicada);
+  const nuevaB = esNovedad(b.data.publicada);
+  if (nuevaA !== nuevaB) return nuevaA ? -1 : 1;
+  if (nuevaA && nuevaB) {
+    const diferencia = b.data.publicada!.getTime() - a.data.publicada!.getTime();
+    if (diferencia !== 0) return diferencia;
+  }
   if (a.data.destacada !== b.data.destacada) return a.data.destacada ? -1 : 1;
   return a.data.autor.localeCompare(b.data.autor, 'es') || a.data.titulo.localeCompare(b.data.titulo, 'es');
 });
@@ -39,7 +49,7 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
       El cielo de la provincia de Jaén, fotografiado y dibujado por los socios de la asociación:
       desde la galaxia de Andrómeda hasta las manchas solares, pasando por cometas, la Luna y
       sketches a mano alzada. Colección recuperada del archivo histórico de nuestra web
-      (2009–2015). ¿Eres socio y quieres publicar aquí tus fotos? Escríbenos.
+      (2009–2015), a la que se van sumando las fotos nuevas de los socios. ¿Eres socio y quieres publicar aquí tus fotos? Escríbenos.
     </p>
 
     <!-- Filtros -->
@@ -84,11 +94,17 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
             data-autor={foto.data.autor}
             data-equipo={foto.data.equipo ?? ''}
             data-fecha={foto.data.fecha ?? ''}
+            data-descripcion={foto.data.descripcion ?? ''}
             target="_blank"
             rel="noopener"
             class="foto card card-hover group block overflow-hidden"
           >
-            <div class="aspect-square overflow-hidden bg-night-900">
+            <div class="relative aspect-square overflow-hidden bg-night-900">
+              {esNovedad(foto.data.publicada) && (
+                <span class="absolute top-2 left-2 z-10 rounded-full bg-star-400 px-2.5 py-0.5 font-display text-xs font-semibold tracking-wide text-night-950 shadow-md shadow-night-950/40">
+                  Nuevo
+                </span>
+              )}
               <Image
                 src={foto.data.imagen}
                 alt={`${foto.data.titulo} — ${foto.data.autor}`}
@@ -125,6 +141,12 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
     gallery: '#galeria',
     children: 'a.foto:not([hidden])',
     pswpModule: () => import('photoswipe'),
+    // Las fotos con descripción reservan un hueco bajo la imagen para que el texto no la tape.
+    paddingFn: (viewport, itemData) => {
+      const enlace = itemData.element as HTMLElement | undefined;
+      if (!enlace?.dataset.descripcion) return {};
+      return { bottom: viewport.x < 640 ? 250 : 130 };
+    },
     bgOpacity: 0.95,
     closeTitle: 'Cerrar (Esc)',
     zoomTitle: 'Ampliar',
@@ -150,10 +172,12 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
           const autor = enlace.dataset.autor ?? '';
           const equipo = enlace.dataset.equipo ?? '';
           const fecha = enlace.dataset.fecha ?? '';
+          const descripcion = enlace.dataset.descripcion ?? '';
           el.innerHTML = `
             <p class="pswp__pie-titulo">${titulo}</p>
             <p class="pswp__pie-autor">${autor}${fecha ? ` · ${fecha}` : ''}</p>
-            ${equipo ? `<p class="pswp__pie-equipo">${equipo}</p>` : ''}`;
+            ${equipo ? `<p class="pswp__pie-equipo">${equipo}</p>` : ''}
+            ${descripcion ? `<p class="pswp__pie-descripcion">${descripcion}</p>` : ''}`;
         });
       },
     });
@@ -203,5 +227,12 @@ const autores = [...new Set(fotos.map((f) => f.data.autor))].sort((a, b) => a.lo
     color: #aab8d0;
     font-size: 0.8rem;
     margin-top: 2px;
+  }
+  .pswp__pie-descripcion {
+    color: #cbd5e6;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    max-width: 68ch;
+    margin-top: 6px;
   }
 </style>

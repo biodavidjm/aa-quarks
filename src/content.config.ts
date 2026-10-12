@@ -75,6 +75,13 @@ const astrofotos = defineCollection({
         .enum(['cielo-profundo', 'sistema-solar', 'cometas', 'sol', 'dibujos', 'paisajes'])
         .default('cielo-profundo'),
       destacada: z.boolean().default(false),
+      /** Texto largo opcional que se muestra en el visor, bajo el título. */
+      descripcion: z.string().optional(),
+      /**
+       * Día en que se subió a la galería. Las recientes llevan la etiqueta
+       * «Nuevo», suben a los primeros puestos y se anuncian en la portada.
+       */
+      publicada: z.coerce.date().optional(),
     }),
 });
 

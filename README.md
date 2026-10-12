@@ -69,6 +69,13 @@ creditoImagen: Breve pie de foto, con el autor
    Categorías admitidas: `cielo-profundo`, `sistema-solar`, `cometas`, `sol`,
    `dibujos`, `paisajes`. La web redimensiona y optimiza la imagen sola.
 
+   Dos campos opcionales más para las fotos recién subidas:
+
+   - `publicada: 2026-10-11` (el día en que la subes). Durante 30 días la foto lleva la
+     etiqueta **Nuevo**, aparece la primera en la galería y la tarjeta de Astrofotografía
+     de la portada la anuncia con sus miniaturas. Pasado ese tiempo se vuelve una foto más.
+   - `descripcion: "Texto largo…"`, que se muestra bajo el título al abrir la foto en grande.
+
 ### Añadir una simulación
 
 1. Sube la simulación (una carpeta con su `index.html`) a `public/simulaciones/`,
