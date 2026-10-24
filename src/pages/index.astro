@@ -27,12 +27,13 @@ const eclipse2027 = {
 };
 
 /**
- * AVISO TEMPORAL — observación pública del 17 de octubre de 2026 (IV Semana
- * Andaluza de la Astronomía). Se oculta solo en el primer despliegue posterior
- * al evento; para quitarlo a mano, borra esta constante, el import de
- * `cartelSemana` y el bloque «AVISO TEMPORAL» del marcado.
+ * AVISO TEMPORAL — observación pública del 24 de octubre de 2026 (IV Semana
+ * Andaluza de la Astronomía, aplazada desde el 17 por el mal tiempo). Se oculta
+ * solo en el primer despliegue posterior al evento; para quitarlo a mano, borra
+ * esta constante, el import de `cartelSemana` y el bloque «AVISO TEMPORAL»
+ * del marcado.
  */
-const mostrarSemanaAstronomia = Date.now() < new Date('2026-10-18T00:00:00+02:00').getTime();
+const mostrarSemanaAstronomia = Date.now() < new Date('2026-10-25T00:00:00+02:00').getTime();
 
 const actividades = (await getCollection('actividades', ({ data }) => !data.historica))
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
@@ -120,7 +121,7 @@ const jsonLd = {
 <Base>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
 
-  <!-- AVISO TEMPORAL: observación pública del 17/10/2026 (quitar después del evento) -->
+  <!-- AVISO TEMPORAL: observación pública del 24/10/2026 (quitar después del evento) -->
   {
     mostrarSemanaAstronomia && (
       <section class="mx-auto max-w-6xl px-4 pt-6 sm:px-6 sm:pt-8" aria-label="Próxima actividad">
@@ -136,7 +137,7 @@ const jsonLd = {
             class="w-16 shrink-0 rounded-lg sm:w-24"
           />
           <div class="min-w-0 flex-1">
-            <p class="eyebrow">Sábado 17 de octubre</p>
+            <p class="eyebrow">Sábado 24 de octubre · aplazada por el mal tiempo</p>
             <h2 class="mt-1 font-display text-lg leading-snug font-semibold text-fog-50 transition-colors group-hover:text-star-300 sm:text-2xl">
               Observación pública en las Eras del Alcázar
             </h2>
